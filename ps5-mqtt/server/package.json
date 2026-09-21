@@ -44,7 +44,7 @@
     "@redux-saga/is": "^1.2.1",
     "@redux-saga/symbols": "^1.2.1",
     "@rspack/cli": "^2.1.4",
-    "@rspack/core": "^2.1.4",
+    "@rspack/core": "^2.2.6",
     "@types/debug": "^4.1.13",
     "@types/express": "^4.17.25",
     "@types/jest": "^30.0.0",
