@@ -45,9 +45,9 @@ export const App = () => {
         theme={theme}
         full={true}
         themeMode={themeMode}
-        background={themeMode === "dark" ? "dark-1" : "light"}
+        background="page"
       >
-        <Grommet.Header pad="small" background={"dark-extra"}>
+        <Grommet.Header pad="small" background="app-bar">
           <Grommet.Anchor
             href="https://github.com/andrew-codes/ps5-mqtt/"
             icon={<GrommetIcons.Github />}

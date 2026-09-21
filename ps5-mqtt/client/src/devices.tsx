@@ -1,4 +1,5 @@
 import * as Grommet from "grommet"
+import * as GrommetIcons from "grommet-icons"
 import React from "react"
 import { Loader } from "./app"
 import { AppContext } from "./context"
@@ -12,34 +13,59 @@ export const Devices: React.FC = () => {
 
   const refresh = React.useCallback(async () => {
     setIsDiscovering(true)
-    setDevices(await api.getDevices())
+    try {
+      setDevices(await api.getDevices())
+    } finally {
+      setIsDiscovering(false)
+    }
   }, [api])
 
   React.useEffect(() => {
-    setIsDiscovering(false)
-  }, [devices])
-
-  React.useEffect(() => {
-    setIsDiscovering(true)
-    api.getDevices().then((d) => setDevices(d))
-  }, [])
+    refresh()
+  }, [refresh])
 
   return (
-    <Grommet.Box align="center" gap="medium" pad="medium">
-      <Grommet.Box align="start" pad="large" gap="large">
-        {isDiscovering ? (
-          <Loader />
-        ) : (
-          <Grommet.Button
-            size="small"
-            disabled={isDiscovering}
-            onClick={refresh}
-            label="Refresh Devices"
-          />
-        )}
+    <Grommet.Box pad={{ horizontal: "medium", vertical: "large" }} gap="medium">
+      <Grommet.Box direction="row" justify="between" align="center">
+        <Grommet.Text color="text-weak" size="small">
+          {devices === undefined
+            ? "Looking for consoles…"
+            : `${devices.length} console${devices.length === 1 ? "" : "s"} found`}
+        </Grommet.Text>
+        <Grommet.Button
+          size="small"
+          icon={<GrommetIcons.Refresh size="small" />}
+          label="Refresh"
+          onClick={refresh}
+          disabled={isDiscovering}
+        />
       </Grommet.Box>
 
-      {!isDiscovering && devices?.map((d) => <Device device={d} key={d.id} onRefresh={refresh} />)}
+      {isDiscovering && <Loader />}
+
+      {!isDiscovering && devices?.length === 0 && (
+        <Grommet.Box
+          pad="large"
+          align="center"
+          gap="xsmall"
+          background="surface"
+          round="small"
+        >
+          <Grommet.Text weight={500}>No consoles found</Grommet.Text>
+          <Grommet.Text size="small" color="text-weak" textAlign="center">
+            Discovery is sent to the configured broadcast address. Check that
+            the console is on the same network.
+          </Grommet.Text>
+        </Grommet.Box>
+      )}
+
+      {!isDiscovering && !!devices?.length && (
+        <Grommet.Grid columns={{ count: "fill", size: "medium" }} gap="medium">
+          {devices.map((d) => (
+            <Device device={d} key={d.id} onRefresh={refresh} />
+          ))}
+        </Grommet.Grid>
+      )}
     </Grommet.Box>
   )
 }
