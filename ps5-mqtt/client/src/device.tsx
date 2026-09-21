@@ -84,7 +84,10 @@ export const Device: React.FC<{
       </Grommet.Card>
 
       {!!authUrl && (
-        <Grommet.Layer onEsc={onAuthExit} onClickOutside={onAuthExit}>
+        <Grommet.Layer
+          onEsc={() => onAuthExit()}
+          onClickOutside={() => onAuthExit()}
+        >
           <Authenticate url={authUrl} onDone={onAuthExit} device={device} />
         </Grommet.Layer>
       )}
