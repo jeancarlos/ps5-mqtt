@@ -25,19 +25,22 @@ export const App = () => {
     setThemeMode(themeMode === "dark" ? "light" : "dark")
   }
 
+  const api = React.useMemo(
+    () =>
+      new Api({
+        log: (value) => {
+          setMessage({ type: "info", value: value?.toString() })
+        },
+        error: (value) => {
+          setMessage({ type: "error", value: value?.toString() })
+        },
+      }),
+    [],
+  )
+  const appContext = React.useMemo(() => ({ api }), [api])
+
   return (
-    <AppContext.Provider
-      value={{
-        api: new Api({
-          log: (value) => {
-            setMessage({ type: "info", value: value?.toString() })
-          },
-          error: (value) => {
-            setMessage({ type: "error", value: value?.toString() })
-          },
-        }),
-      }}
-    >
+    <AppContext.Provider value={appContext}>
       <Grommet.Grommet
         theme={theme}
         full={true}
