@@ -23,6 +23,12 @@ import { MQTT_CLIENT, PLAYACTOR_CLIENT, Settings, SETTINGS } from "./services"
 import { createErrorLogger } from "./util/error-logger"
 import { setupWebserver } from "./web-server"
 
+// The store is created inside the bootstrap try block, below the scope the web
+// server is started from. This getter bridges the two without widening the
+// store's lifetime or changing what the catch covers.
+let getDeviceStateForWebServer: () => Record<string, never> = () =>
+  ({}) as Record<string, never>
+
 const debug = createDebugger("@ha:ps5")
 const debugMqtt = createDebugger("@ha:ps5:mqtt")
 const debugState = createDebugger("@ha:state")
@@ -130,6 +136,9 @@ export async function run() {
         accounts: {},
       },
     })
+    getDeviceStateForWebServer = () =>
+      store.getState().devices as unknown as Record<string, never>
+
     store.subscribe(() => {
       debugState(JSON.stringify(store.getState(), null, 2))
     })
@@ -198,5 +207,7 @@ export async function run() {
     logError(e)
   }
 
-  setupWebserver(appConfig.frontendPort ?? 3000, settings)
+  setupWebserver(appConfig.frontendPort ?? 3000, settings, () =>
+    getDeviceStateForWebServer(),
+  )
 }

@@ -28,6 +28,11 @@ export function setupWebserver(
     credentialStoragePath,
     deviceDiscoveryBroadcastAddress,
   }: Settings,
+  // Discovery answers with what the console broadcasts; the running title only
+  // exists in the store, which is what gets published to MQTT. Passing a getter
+  // keeps the web server from depending on the store itself.
+  getDeviceState: () => Record<string, { id?: string; activity?: unknown }> = () =>
+    ({}),
 ): Express {
   if (app !== undefined) {
     throw Error("web server is already running")
@@ -70,10 +75,13 @@ export function setupWebserver(
         logError(e)
       }
 
+      const deviceState = Object.values(getDeviceState())
+
       res.send({
         devices: devices.map((device) => ({
           ...device,
           registered: storedCredentials.includes(device.id),
+          activity: deviceState.find((d) => d?.id === device.id)?.activity,
         })),
       })
     } catch (e) {
