@@ -5,12 +5,18 @@ import { Authenticate } from "./authenticate"
 import { AppContext } from "./context"
 import type { IDevice } from "./types"
 
-export const Device: React.FC<{ device: IDevice }> = ({ device }) => {
+export const Device: React.FC<{
+  device: IDevice
+  onRefresh?: () => Promise<void> | void
+}> = ({ device, onRefresh }) => {
   const { api } = React.useContext(AppContext)
   const [authUrl, setAuthUrl] = React.useState<string>("")
 
-  const onAuthExit = async () => {
+  const onAuthExit = async (success?: boolean) => {
     setAuthUrl(undefined)
+    if (success) {
+      await onRefresh?.()
+    }
   }
 
   return (

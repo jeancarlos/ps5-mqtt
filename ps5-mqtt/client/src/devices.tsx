@@ -10,6 +10,11 @@ export const Devices: React.FC = () => {
   const [devices, setDevices] = React.useState<IDevice[] | undefined>()
   const [isDiscovering, setIsDiscovering] = React.useState<boolean>(false)
 
+  const refresh = React.useCallback(async () => {
+    setIsDiscovering(true)
+    setDevices(await api.getDevices())
+  }, [api])
+
   React.useEffect(() => {
     setIsDiscovering(false)
   }, [devices])
@@ -29,17 +34,13 @@ export const Devices: React.FC = () => {
             size="large"
             primary
             disabled={isDiscovering}
-            onClick={async () => {
-              setIsDiscovering(true)
-              const devices = await api.getDevices()
-              setDevices(devices)
-            }}
+            onClick={refresh}
             label="Refresh Devices"
           />
         )}
       </Grommet.Box>
 
-      {!isDiscovering && devices?.map((d) => <Device device={d} key={d.id} />)}
+      {!isDiscovering && devices?.map((d) => <Device device={d} key={d.id} onRefresh={refresh} />)}
     </Grommet.Box>
   )
 }
