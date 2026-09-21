@@ -916,11 +916,11 @@ const RAW_RUNTIME_STATE =
         ],\
         "linkType": "HARD"\
       }],\
-      ["npm:1.11.2", {\
-        "packageLocation": "./.yarn/cache/@emnapi-core-npm-1.11.2-dfc4db3246-424ca1607f.zip/node_modules/@emnapi/core/",\
+      ["npm:1.11.3", {\
+        "packageLocation": "./.yarn/cache/@emnapi-core-npm-1.11.3-35274357a9-4ca08d349a.zip/node_modules/@emnapi/core/",\
         "packageDependencies": [\
-          ["@emnapi/core", "npm:1.11.2"],\
-          ["@emnapi/wasi-threads", "npm:1.2.2"],\
+          ["@emnapi/core", "npm:1.11.3"],\
+          ["@emnapi/wasi-threads", "npm:1.2.3"],\
           ["tslib", "npm:2.8.1"]\
         ],\
         "linkType": "HARD"\
@@ -935,10 +935,10 @@ const RAW_RUNTIME_STATE =
         ],\
         "linkType": "HARD"\
       }],\
-      ["npm:1.11.2", {\
-        "packageLocation": "./.yarn/cache/@emnapi-runtime-npm-1.11.2-4a2ff8a630-d8d500059f.zip/node_modules/@emnapi/runtime/",\
+      ["npm:1.11.3", {\
+        "packageLocation": "./.yarn/cache/@emnapi-runtime-npm-1.11.3-92f9e84cee-a00f1020fe.zip/node_modules/@emnapi/runtime/",\
         "packageDependencies": [\
-          ["@emnapi/runtime", "npm:1.11.2"],\
+          ["@emnapi/runtime", "npm:1.11.3"],\
           ["tslib", "npm:2.8.1"]\
         ],\
         "linkType": "HARD"\
@@ -953,10 +953,10 @@ const RAW_RUNTIME_STATE =
         ],\
         "linkType": "HARD"\
       }],\
-      ["npm:1.2.2", {\
-        "packageLocation": "./.yarn/cache/@emnapi-wasi-threads-npm-1.2.2-474f2ca9de-f0dc8269d6.zip/node_modules/@emnapi/wasi-threads/",\
+      ["npm:1.2.3", {\
+        "packageLocation": "./.yarn/cache/@emnapi-wasi-threads-npm-1.2.3-5cefb475ad-5aed84bc5d.zip/node_modules/@emnapi/wasi-threads/",\
         "packageDependencies": [\
-          ["@emnapi/wasi-threads", "npm:1.2.2"],\
+          ["@emnapi/wasi-threads", "npm:1.2.3"],\
           ["tslib", "npm:2.8.1"]\
         ],\
         "linkType": "HARD"\
@@ -1821,12 +1821,12 @@ const RAW_RUNTIME_STATE =
         ],\
         "linkType": "HARD"\
       }],\
-      ["virtual:af4fd04c8b59efb2d5de3ed11b7b7cb00735db37d35ff666b97228d329d459f0ac3c83dee7f32567a7a6a3b717ff34a7818f6e9212af2ef1c1898276d57fa818#npm:1.1.6", {\
-        "packageLocation": "./.yarn/__virtual__/@napi-rs-wasm-runtime-virtual-bafe1c5f39/0/cache/@napi-rs-wasm-runtime-npm-1.1.6-5f9034136b-344518bf3e.zip/node_modules/@napi-rs/wasm-runtime/",\
+      ["virtual:d807519ec76375861a8dd76a074f45b5ec61aa161d37ffa778812b3ae6190e3c2adf0ea592afa238ab8f52fbfea325631aa59b6a605f97f9c9d53f7d0340be85#npm:1.1.6", {\
+        "packageLocation": "./.yarn/__virtual__/@napi-rs-wasm-runtime-virtual-d013288c62/0/cache/@napi-rs-wasm-runtime-npm-1.1.6-5f9034136b-344518bf3e.zip/node_modules/@napi-rs/wasm-runtime/",\
         "packageDependencies": [\
-          ["@emnapi/core", "npm:1.11.2"],\
-          ["@emnapi/runtime", "npm:1.11.2"],\
-          ["@napi-rs/wasm-runtime", "virtual:af4fd04c8b59efb2d5de3ed11b7b7cb00735db37d35ff666b97228d329d459f0ac3c83dee7f32567a7a6a3b717ff34a7818f6e9212af2ef1c1898276d57fa818#npm:1.1.6"],\
+          ["@emnapi/core", "npm:1.11.3"],\
+          ["@emnapi/runtime", "npm:1.11.3"],\
+          ["@napi-rs/wasm-runtime", "virtual:d807519ec76375861a8dd76a074f45b5ec61aa161d37ffa778812b3ae6190e3c2adf0ea592afa238ab8f52fbfea325631aa59b6a605f97f9c9d53f7d0340be85#npm:1.1.6"],\
           ["@tybys/wasm-util", "npm:0.10.3"],\
           ["@types/emnapi__core", null],\
           ["@types/emnapi__runtime", null]\
@@ -1895,7 +1895,7 @@ const RAW_RUNTIME_STATE =
         "packageDependencies": [\
           ["@ps5-mqtt/client", "workspace:ps5-mqtt/client"],\
           ["@rspack/cli", "virtual:d4f807efd23a5cd4736701b5d35b7cbaa79d35c08724c596029848daa71ff1714c5f33c8e5f65ccb665de53a15a170b8ed6dc1cfcd3c70c50f69654c5b09233a#npm:2.1.4"],\
-          ["@rspack/core", "virtual:d4f807efd23a5cd4736701b5d35b7cbaa79d35c08724c596029848daa71ff1714c5f33c8e5f65ccb665de53a15a170b8ed6dc1cfcd3c70c50f69654c5b09233a#npm:2.1.4"],\
+          ["@rspack/core", "virtual:d4f807efd23a5cd4736701b5d35b7cbaa79d35c08724c596029848daa71ff1714c5f33c8e5f65ccb665de53a15a170b8ed6dc1cfcd3c70c50f69654c5b09233a#npm:2.2.6"],\
           ["@rspack/dev-server", "virtual:d4f807efd23a5cd4736701b5d35b7cbaa79d35c08724c596029848daa71ff1714c5f33c8e5f65ccb665de53a15a170b8ed6dc1cfcd3c70c50f69654c5b09233a#npm:2.1.0"],\
           ["@rspack/plugin-react-refresh", "virtual:d4f807efd23a5cd4736701b5d35b7cbaa79d35c08724c596029848daa71ff1714c5f33c8e5f65ccb665de53a15a170b8ed6dc1cfcd3c70c50f69654c5b09233a#npm:2.0.2"],\
           ["@types/node", "npm:24.13.3"],\
@@ -1934,7 +1934,7 @@ const RAW_RUNTIME_STATE =
           ["@redux-saga/symbols", "npm:1.2.1"],\
           ["@reduxjs/toolkit", "virtual:bc7986c84f22f108e9f05e513731bfc8ba6395a70a40aae47878f7bd4cc6ddeebabca3dc806c262e1e66a1e05e9e8fc6c57f8018ad74624bd44e2db2a8aea31d#npm:2.12.0"],\
           ["@rspack/cli", "virtual:bc7986c84f22f108e9f05e513731bfc8ba6395a70a40aae47878f7bd4cc6ddeebabca3dc806c262e1e66a1e05e9e8fc6c57f8018ad74624bd44e2db2a8aea31d#npm:2.1.4"],\
-          ["@rspack/core", "virtual:d4f807efd23a5cd4736701b5d35b7cbaa79d35c08724c596029848daa71ff1714c5f33c8e5f65ccb665de53a15a170b8ed6dc1cfcd3c70c50f69654c5b09233a#npm:2.1.4"],\
+          ["@rspack/core", "virtual:d4f807efd23a5cd4736701b5d35b7cbaa79d35c08724c596029848daa71ff1714c5f33c8e5f65ccb665de53a15a170b8ed6dc1cfcd3c70c50f69654c5b09233a#npm:2.2.6"],\
           ["@types/debug", "npm:4.1.13"],\
           ["@types/express", "npm:4.17.25"],\
           ["@types/jest", "npm:30.0.0"],\
@@ -2063,133 +2063,153 @@ const RAW_RUNTIME_STATE =
       }]\
     ]],\
     ["@rspack/binding", [\
-      ["npm:2.1.4", {\
-        "packageLocation": "./.yarn/cache/@rspack-binding-npm-2.1.4-fa42cfb39b-bb871c14a5.zip/node_modules/@rspack/binding/",\
+      ["npm:2.2.6", {\
+        "packageLocation": "./.yarn/cache/@rspack-binding-npm-2.2.6-bc2a582d26-acc53e04f2.zip/node_modules/@rspack/binding/",\
         "packageDependencies": [\
-          ["@rspack/binding", "npm:2.1.4"],\
-          ["@rspack/binding-darwin-arm64", "npm:2.1.4"],\
-          ["@rspack/binding-darwin-x64", "npm:2.1.4"],\
-          ["@rspack/binding-linux-arm64-gnu", "npm:2.1.4"],\
-          ["@rspack/binding-linux-arm64-musl", "npm:2.1.4"],\
-          ["@rspack/binding-linux-riscv64-gnu", "npm:2.1.4"],\
-          ["@rspack/binding-linux-riscv64-musl", "npm:2.1.4"],\
-          ["@rspack/binding-linux-x64-gnu", "npm:2.1.4"],\
-          ["@rspack/binding-linux-x64-musl", "npm:2.1.4"],\
-          ["@rspack/binding-wasm32-wasi", "npm:2.1.4"],\
-          ["@rspack/binding-win32-arm64-msvc", "npm:2.1.4"],\
-          ["@rspack/binding-win32-ia32-msvc", "npm:2.1.4"],\
-          ["@rspack/binding-win32-x64-msvc", "npm:2.1.4"]\
+          ["@rspack/binding", "npm:2.2.6"],\
+          ["@rspack/binding-darwin-arm64", "npm:2.2.6"],\
+          ["@rspack/binding-darwin-x64", "npm:2.2.6"],\
+          ["@rspack/binding-linux-arm64-gnu", "npm:2.2.6"],\
+          ["@rspack/binding-linux-arm64-musl", "npm:2.2.6"],\
+          ["@rspack/binding-linux-ppc64-gnu", "npm:2.2.6"],\
+          ["@rspack/binding-linux-riscv64-gnu", "npm:2.2.6"],\
+          ["@rspack/binding-linux-riscv64-musl", "npm:2.2.6"],\
+          ["@rspack/binding-linux-s390x-gnu", "npm:2.2.6"],\
+          ["@rspack/binding-linux-x64-gnu", "npm:2.2.6"],\
+          ["@rspack/binding-linux-x64-musl", "npm:2.2.6"],\
+          ["@rspack/binding-wasm32-wasi", "npm:2.2.6"],\
+          ["@rspack/binding-win32-arm64-msvc", "npm:2.2.6"],\
+          ["@rspack/binding-win32-ia32-msvc", "npm:2.2.6"],\
+          ["@rspack/binding-win32-x64-msvc", "npm:2.2.6"]\
         ],\
         "linkType": "HARD"\
       }]\
     ]],\
     ["@rspack/binding-darwin-arm64", [\
-      ["npm:2.1.4", {\
-        "packageLocation": "./.yarn/unplugged/@rspack-binding-darwin-arm64-npm-2.1.4-c2d8ecb731/node_modules/@rspack/binding-darwin-arm64/",\
+      ["npm:2.2.6", {\
+        "packageLocation": "./.yarn/unplugged/@rspack-binding-darwin-arm64-npm-2.2.6-f5277e723e/node_modules/@rspack/binding-darwin-arm64/",\
         "packageDependencies": [\
-          ["@rspack/binding-darwin-arm64", "npm:2.1.4"]\
+          ["@rspack/binding-darwin-arm64", "npm:2.2.6"]\
         ],\
         "linkType": "HARD"\
       }]\
     ]],\
     ["@rspack/binding-darwin-x64", [\
-      ["npm:2.1.4", {\
-        "packageLocation": "./.yarn/unplugged/@rspack-binding-darwin-x64-npm-2.1.4-ba2a0c5111/node_modules/@rspack/binding-darwin-x64/",\
+      ["npm:2.2.6", {\
+        "packageLocation": "./.yarn/unplugged/@rspack-binding-darwin-x64-npm-2.2.6-d8b936b350/node_modules/@rspack/binding-darwin-x64/",\
         "packageDependencies": [\
-          ["@rspack/binding-darwin-x64", "npm:2.1.4"]\
+          ["@rspack/binding-darwin-x64", "npm:2.2.6"]\
         ],\
         "linkType": "HARD"\
       }]\
     ]],\
     ["@rspack/binding-linux-arm64-gnu", [\
-      ["npm:2.1.4", {\
-        "packageLocation": "./.yarn/unplugged/@rspack-binding-linux-arm64-gnu-npm-2.1.4-b46ed84640/node_modules/@rspack/binding-linux-arm64-gnu/",\
+      ["npm:2.2.6", {\
+        "packageLocation": "./.yarn/unplugged/@rspack-binding-linux-arm64-gnu-npm-2.2.6-021c5487c8/node_modules/@rspack/binding-linux-arm64-gnu/",\
         "packageDependencies": [\
-          ["@rspack/binding-linux-arm64-gnu", "npm:2.1.4"]\
+          ["@rspack/binding-linux-arm64-gnu", "npm:2.2.6"]\
         ],\
         "linkType": "HARD"\
       }]\
     ]],\
     ["@rspack/binding-linux-arm64-musl", [\
-      ["npm:2.1.4", {\
-        "packageLocation": "./.yarn/unplugged/@rspack-binding-linux-arm64-musl-npm-2.1.4-76452d639f/node_modules/@rspack/binding-linux-arm64-musl/",\
+      ["npm:2.2.6", {\
+        "packageLocation": "./.yarn/unplugged/@rspack-binding-linux-arm64-musl-npm-2.2.6-f5e31c700a/node_modules/@rspack/binding-linux-arm64-musl/",\
         "packageDependencies": [\
-          ["@rspack/binding-linux-arm64-musl", "npm:2.1.4"]\
+          ["@rspack/binding-linux-arm64-musl", "npm:2.2.6"]\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
+    ["@rspack/binding-linux-ppc64-gnu", [\
+      ["npm:2.2.6", {\
+        "packageLocation": "./.yarn/unplugged/@rspack-binding-linux-ppc64-gnu-npm-2.2.6-081eaa4b17/node_modules/@rspack/binding-linux-ppc64-gnu/",\
+        "packageDependencies": [\
+          ["@rspack/binding-linux-ppc64-gnu", "npm:2.2.6"]\
         ],\
         "linkType": "HARD"\
       }]\
     ]],\
     ["@rspack/binding-linux-riscv64-gnu", [\
-      ["npm:2.1.4", {\
-        "packageLocation": "./.yarn/unplugged/@rspack-binding-linux-riscv64-gnu-npm-2.1.4-d6850764b3/node_modules/@rspack/binding-linux-riscv64-gnu/",\
+      ["npm:2.2.6", {\
+        "packageLocation": "./.yarn/unplugged/@rspack-binding-linux-riscv64-gnu-npm-2.2.6-545050e1c1/node_modules/@rspack/binding-linux-riscv64-gnu/",\
         "packageDependencies": [\
-          ["@rspack/binding-linux-riscv64-gnu", "npm:2.1.4"]\
+          ["@rspack/binding-linux-riscv64-gnu", "npm:2.2.6"]\
         ],\
         "linkType": "HARD"\
       }]\
     ]],\
     ["@rspack/binding-linux-riscv64-musl", [\
-      ["npm:2.1.4", {\
-        "packageLocation": "./.yarn/unplugged/@rspack-binding-linux-riscv64-musl-npm-2.1.4-ebba6c38da/node_modules/@rspack/binding-linux-riscv64-musl/",\
+      ["npm:2.2.6", {\
+        "packageLocation": "./.yarn/unplugged/@rspack-binding-linux-riscv64-musl-npm-2.2.6-d07aa63268/node_modules/@rspack/binding-linux-riscv64-musl/",\
         "packageDependencies": [\
-          ["@rspack/binding-linux-riscv64-musl", "npm:2.1.4"]\
+          ["@rspack/binding-linux-riscv64-musl", "npm:2.2.6"]\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
+    ["@rspack/binding-linux-s390x-gnu", [\
+      ["npm:2.2.6", {\
+        "packageLocation": "./.yarn/unplugged/@rspack-binding-linux-s390x-gnu-npm-2.2.6-7a0c147f01/node_modules/@rspack/binding-linux-s390x-gnu/",\
+        "packageDependencies": [\
+          ["@rspack/binding-linux-s390x-gnu", "npm:2.2.6"]\
         ],\
         "linkType": "HARD"\
       }]\
     ]],\
     ["@rspack/binding-linux-x64-gnu", [\
-      ["npm:2.1.4", {\
-        "packageLocation": "./.yarn/unplugged/@rspack-binding-linux-x64-gnu-npm-2.1.4-9e76a3d6bb/node_modules/@rspack/binding-linux-x64-gnu/",\
+      ["npm:2.2.6", {\
+        "packageLocation": "./.yarn/unplugged/@rspack-binding-linux-x64-gnu-npm-2.2.6-fac45eba15/node_modules/@rspack/binding-linux-x64-gnu/",\
         "packageDependencies": [\
-          ["@rspack/binding-linux-x64-gnu", "npm:2.1.4"]\
+          ["@rspack/binding-linux-x64-gnu", "npm:2.2.6"]\
         ],\
         "linkType": "HARD"\
       }]\
     ]],\
     ["@rspack/binding-linux-x64-musl", [\
-      ["npm:2.1.4", {\
-        "packageLocation": "./.yarn/unplugged/@rspack-binding-linux-x64-musl-npm-2.1.4-eb89a9c725/node_modules/@rspack/binding-linux-x64-musl/",\
+      ["npm:2.2.6", {\
+        "packageLocation": "./.yarn/unplugged/@rspack-binding-linux-x64-musl-npm-2.2.6-99f0d1c2e8/node_modules/@rspack/binding-linux-x64-musl/",\
         "packageDependencies": [\
-          ["@rspack/binding-linux-x64-musl", "npm:2.1.4"]\
+          ["@rspack/binding-linux-x64-musl", "npm:2.2.6"]\
         ],\
         "linkType": "HARD"\
       }]\
     ]],\
     ["@rspack/binding-wasm32-wasi", [\
-      ["npm:2.1.4", {\
-        "packageLocation": "./.yarn/unplugged/@rspack-binding-wasm32-wasi-npm-2.1.4-af4fd04c8b/node_modules/@rspack/binding-wasm32-wasi/",\
+      ["npm:2.2.6", {\
+        "packageLocation": "./.yarn/unplugged/@rspack-binding-wasm32-wasi-npm-2.2.6-d807519ec7/node_modules/@rspack/binding-wasm32-wasi/",\
         "packageDependencies": [\
-          ["@emnapi/core", "npm:1.11.2"],\
-          ["@emnapi/runtime", "npm:1.11.2"],\
-          ["@napi-rs/wasm-runtime", "virtual:af4fd04c8b59efb2d5de3ed11b7b7cb00735db37d35ff666b97228d329d459f0ac3c83dee7f32567a7a6a3b717ff34a7818f6e9212af2ef1c1898276d57fa818#npm:1.1.6"],\
-          ["@rspack/binding-wasm32-wasi", "npm:2.1.4"]\
+          ["@emnapi/core", "npm:1.11.3"],\
+          ["@emnapi/runtime", "npm:1.11.3"],\
+          ["@napi-rs/wasm-runtime", "virtual:d807519ec76375861a8dd76a074f45b5ec61aa161d37ffa778812b3ae6190e3c2adf0ea592afa238ab8f52fbfea325631aa59b6a605f97f9c9d53f7d0340be85#npm:1.1.6"],\
+          ["@rspack/binding-wasm32-wasi", "npm:2.2.6"]\
         ],\
         "linkType": "HARD"\
       }]\
     ]],\
     ["@rspack/binding-win32-arm64-msvc", [\
-      ["npm:2.1.4", {\
-        "packageLocation": "./.yarn/unplugged/@rspack-binding-win32-arm64-msvc-npm-2.1.4-843f3190c0/node_modules/@rspack/binding-win32-arm64-msvc/",\
+      ["npm:2.2.6", {\
+        "packageLocation": "./.yarn/unplugged/@rspack-binding-win32-arm64-msvc-npm-2.2.6-86516cd0a2/node_modules/@rspack/binding-win32-arm64-msvc/",\
         "packageDependencies": [\
-          ["@rspack/binding-win32-arm64-msvc", "npm:2.1.4"]\
+          ["@rspack/binding-win32-arm64-msvc", "npm:2.2.6"]\
         ],\
         "linkType": "HARD"\
       }]\
     ]],\
     ["@rspack/binding-win32-ia32-msvc", [\
-      ["npm:2.1.4", {\
-        "packageLocation": "./.yarn/unplugged/@rspack-binding-win32-ia32-msvc-npm-2.1.4-5b82d96c4b/node_modules/@rspack/binding-win32-ia32-msvc/",\
+      ["npm:2.2.6", {\
+        "packageLocation": "./.yarn/unplugged/@rspack-binding-win32-ia32-msvc-npm-2.2.6-b86f5ad9b1/node_modules/@rspack/binding-win32-ia32-msvc/",\
         "packageDependencies": [\
-          ["@rspack/binding-win32-ia32-msvc", "npm:2.1.4"]\
+          ["@rspack/binding-win32-ia32-msvc", "npm:2.2.6"]\
         ],\
         "linkType": "HARD"\
       }]\
     ]],\
     ["@rspack/binding-win32-x64-msvc", [\
-      ["npm:2.1.4", {\
-        "packageLocation": "./.yarn/unplugged/@rspack-binding-win32-x64-msvc-npm-2.1.4-8baf1530ad/node_modules/@rspack/binding-win32-x64-msvc/",\
+      ["npm:2.2.6", {\
+        "packageLocation": "./.yarn/unplugged/@rspack-binding-win32-x64-msvc-npm-2.2.6-0bf9de6b43/node_modules/@rspack/binding-win32-x64-msvc/",\
         "packageDependencies": [\
-          ["@rspack/binding-win32-x64-msvc", "npm:2.1.4"]\
+          ["@rspack/binding-win32-x64-msvc", "npm:2.2.6"]\
         ],\
         "linkType": "HARD"\
       }]\
@@ -2206,7 +2226,7 @@ const RAW_RUNTIME_STATE =
         "packageLocation": "./.yarn/__virtual__/@rspack-cli-virtual-c1dbff48b0/0/cache/@rspack-cli-npm-2.1.4-5bfac62117-9e2fec2d76.zip/node_modules/@rspack/cli/",\
         "packageDependencies": [\
           ["@rspack/cli", "virtual:bc7986c84f22f108e9f05e513731bfc8ba6395a70a40aae47878f7bd4cc6ddeebabca3dc806c262e1e66a1e05e9e8fc6c57f8018ad74624bd44e2db2a8aea31d#npm:2.1.4"],\
-          ["@rspack/core", "virtual:d4f807efd23a5cd4736701b5d35b7cbaa79d35c08724c596029848daa71ff1714c5f33c8e5f65ccb665de53a15a170b8ed6dc1cfcd3c70c50f69654c5b09233a#npm:2.1.4"],\
+          ["@rspack/core", "virtual:d4f807efd23a5cd4736701b5d35b7cbaa79d35c08724c596029848daa71ff1714c5f33c8e5f65ccb665de53a15a170b8ed6dc1cfcd3c70c50f69654c5b09233a#npm:2.2.6"],\
           ["@rspack/dev-server", null],\
           ["@types/rspack__core", null],\
           ["@types/rspack__dev-server", null]\
@@ -2223,7 +2243,7 @@ const RAW_RUNTIME_STATE =
         "packageLocation": "./.yarn/__virtual__/@rspack-cli-virtual-89b86b6781/0/cache/@rspack-cli-npm-2.1.4-5bfac62117-9e2fec2d76.zip/node_modules/@rspack/cli/",\
         "packageDependencies": [\
           ["@rspack/cli", "virtual:d4f807efd23a5cd4736701b5d35b7cbaa79d35c08724c596029848daa71ff1714c5f33c8e5f65ccb665de53a15a170b8ed6dc1cfcd3c70c50f69654c5b09233a#npm:2.1.4"],\
-          ["@rspack/core", "virtual:d4f807efd23a5cd4736701b5d35b7cbaa79d35c08724c596029848daa71ff1714c5f33c8e5f65ccb665de53a15a170b8ed6dc1cfcd3c70c50f69654c5b09233a#npm:2.1.4"],\
+          ["@rspack/core", "virtual:d4f807efd23a5cd4736701b5d35b7cbaa79d35c08724c596029848daa71ff1714c5f33c8e5f65ccb665de53a15a170b8ed6dc1cfcd3c70c50f69654c5b09233a#npm:2.2.6"],\
           ["@rspack/dev-server", "virtual:d4f807efd23a5cd4736701b5d35b7cbaa79d35c08724c596029848daa71ff1714c5f33c8e5f65ccb665de53a15a170b8ed6dc1cfcd3c70c50f69654c5b09233a#npm:2.1.0"],\
           ["@types/rspack__core", null],\
           ["@types/rspack__dev-server", null]\
@@ -2238,19 +2258,19 @@ const RAW_RUNTIME_STATE =
       }]\
     ]],\
     ["@rspack/core", [\
-      ["npm:2.1.4", {\
-        "packageLocation": "./.yarn/cache/@rspack-core-npm-2.1.4-90229d524c-ddb76e8aaa.zip/node_modules/@rspack/core/",\
+      ["npm:2.2.6", {\
+        "packageLocation": "./.yarn/cache/@rspack-core-npm-2.2.6-27e39fd34a-c67fbb210a.zip/node_modules/@rspack/core/",\
         "packageDependencies": [\
-          ["@rspack/core", "npm:2.1.4"]\
+          ["@rspack/core", "npm:2.2.6"]\
         ],\
         "linkType": "SOFT"\
       }],\
-      ["virtual:d4f807efd23a5cd4736701b5d35b7cbaa79d35c08724c596029848daa71ff1714c5f33c8e5f65ccb665de53a15a170b8ed6dc1cfcd3c70c50f69654c5b09233a#npm:2.1.4", {\
-        "packageLocation": "./.yarn/__virtual__/@rspack-core-virtual-31dc7df760/0/cache/@rspack-core-npm-2.1.4-90229d524c-ddb76e8aaa.zip/node_modules/@rspack/core/",\
+      ["virtual:d4f807efd23a5cd4736701b5d35b7cbaa79d35c08724c596029848daa71ff1714c5f33c8e5f65ccb665de53a15a170b8ed6dc1cfcd3c70c50f69654c5b09233a#npm:2.2.6", {\
+        "packageLocation": "./.yarn/__virtual__/@rspack-core-virtual-191351251f/0/cache/@rspack-core-npm-2.2.6-27e39fd34a-c67fbb210a.zip/node_modules/@rspack/core/",\
         "packageDependencies": [\
           ["@module-federation/runtime-tools", null],\
-          ["@rspack/binding", "npm:2.1.4"],\
-          ["@rspack/core", "virtual:d4f807efd23a5cd4736701b5d35b7cbaa79d35c08724c596029848daa71ff1714c5f33c8e5f65ccb665de53a15a170b8ed6dc1cfcd3c70c50f69654c5b09233a#npm:2.1.4"],\
+          ["@rspack/binding", "npm:2.2.6"],\
+          ["@rspack/core", "virtual:d4f807efd23a5cd4736701b5d35b7cbaa79d35c08724c596029848daa71ff1714c5f33c8e5f65ccb665de53a15a170b8ed6dc1cfcd3c70c50f69654c5b09233a#npm:2.2.6"],\
           ["@swc/helpers", null],\
           ["@types/module-federation__runtime-tools", null],\
           ["@types/swc__helpers", null]\
@@ -2275,7 +2295,7 @@ const RAW_RUNTIME_STATE =
       ["virtual:8ab61fa54962b3ecbdc30967f6a78dbf8642428b8b17e10cb8c0f80fcd18fab3ab786333cdf53c6e799bdfa6eae77ca91395492532f1f97d7eb9061261ffbc3a#npm:2.0.3", {\
         "packageLocation": "./.yarn/__virtual__/@rspack-dev-middleware-virtual-dba28c3303/0/cache/@rspack-dev-middleware-npm-2.0.3-00dda15b81-603d51113a.zip/node_modules/@rspack/dev-middleware/",\
         "packageDependencies": [\
-          ["@rspack/core", "virtual:d4f807efd23a5cd4736701b5d35b7cbaa79d35c08724c596029848daa71ff1714c5f33c8e5f65ccb665de53a15a170b8ed6dc1cfcd3c70c50f69654c5b09233a#npm:2.1.4"],\
+          ["@rspack/core", "virtual:d4f807efd23a5cd4736701b5d35b7cbaa79d35c08724c596029848daa71ff1714c5f33c8e5f65ccb665de53a15a170b8ed6dc1cfcd3c70c50f69654c5b09233a#npm:2.2.6"],\
           ["@rspack/dev-middleware", "virtual:8ab61fa54962b3ecbdc30967f6a78dbf8642428b8b17e10cb8c0f80fcd18fab3ab786333cdf53c6e799bdfa6eae77ca91395492532f1f97d7eb9061261ffbc3a#npm:2.0.3"],\
           ["@types/rspack__core", null]\
         ],\
@@ -2297,7 +2317,7 @@ const RAW_RUNTIME_STATE =
       ["virtual:d4f807efd23a5cd4736701b5d35b7cbaa79d35c08724c596029848daa71ff1714c5f33c8e5f65ccb665de53a15a170b8ed6dc1cfcd3c70c50f69654c5b09233a#npm:2.1.0", {\
         "packageLocation": "./.yarn/__virtual__/@rspack-dev-server-virtual-8ab61fa549/0/cache/@rspack-dev-server-npm-2.1.0-73cf3f404a-54d25adb89.zip/node_modules/@rspack/dev-server/",\
         "packageDependencies": [\
-          ["@rspack/core", "virtual:d4f807efd23a5cd4736701b5d35b7cbaa79d35c08724c596029848daa71ff1714c5f33c8e5f65ccb665de53a15a170b8ed6dc1cfcd3c70c50f69654c5b09233a#npm:2.1.4"],\
+          ["@rspack/core", "virtual:d4f807efd23a5cd4736701b5d35b7cbaa79d35c08724c596029848daa71ff1714c5f33c8e5f65ccb665de53a15a170b8ed6dc1cfcd3c70c50f69654c5b09233a#npm:2.2.6"],\
           ["@rspack/dev-middleware", "virtual:8ab61fa54962b3ecbdc30967f6a78dbf8642428b8b17e10cb8c0f80fcd18fab3ab786333cdf53c6e799bdfa6eae77ca91395492532f1f97d7eb9061261ffbc3a#npm:2.0.3"],\
           ["@rspack/dev-server", "virtual:d4f807efd23a5cd4736701b5d35b7cbaa79d35c08724c596029848daa71ff1714c5f33c8e5f65ccb665de53a15a170b8ed6dc1cfcd3c70c50f69654c5b09233a#npm:2.1.0"],\
           ["@types/rspack__core", null],\
@@ -2324,7 +2344,7 @@ const RAW_RUNTIME_STATE =
       ["virtual:d4f807efd23a5cd4736701b5d35b7cbaa79d35c08724c596029848daa71ff1714c5f33c8e5f65ccb665de53a15a170b8ed6dc1cfcd3c70c50f69654c5b09233a#npm:2.0.2", {\
         "packageLocation": "./.yarn/__virtual__/@rspack-plugin-react-refresh-virtual-20c40df06d/0/cache/@rspack-plugin-react-refresh-npm-2.0.2-5d01fc985c-1291689c3f.zip/node_modules/@rspack/plugin-react-refresh/",\
         "packageDependencies": [\
-          ["@rspack/core", "virtual:d4f807efd23a5cd4736701b5d35b7cbaa79d35c08724c596029848daa71ff1714c5f33c8e5f65ccb665de53a15a170b8ed6dc1cfcd3c70c50f69654c5b09233a#npm:2.1.4"],\
+          ["@rspack/core", "virtual:d4f807efd23a5cd4736701b5d35b7cbaa79d35c08724c596029848daa71ff1714c5f33c8e5f65ccb665de53a15a170b8ed6dc1cfcd3c70c50f69654c5b09233a#npm:2.2.6"],\
           ["@rspack/plugin-react-refresh", "virtual:d4f807efd23a5cd4736701b5d35b7cbaa79d35c08724c596029848daa71ff1714c5f33c8e5f65ccb665de53a15a170b8ed6dc1cfcd3c70c50f69654c5b09233a#npm:2.0.2"],\
           ["@types/react-refresh", null],\
           ["@types/rspack__core", null],\
