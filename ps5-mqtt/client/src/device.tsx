@@ -12,6 +12,20 @@ export const Device: React.FC<{
   const { api } = React.useContext(AppContext)
   const [authUrl, setAuthUrl] = React.useState<string>("")
 
+  const [acquiringLink, setAcquiringLink] = React.useState(false)
+
+  const onAuthenticate = async () => {
+    setAcquiringLink(true)
+    try {
+      const url = await api.acquireAuthenticationLink(device)
+      if (url !== undefined) {
+        setAuthUrl(url)
+      }
+    } finally {
+      setAcquiringLink(false)
+    }
+  }
+
   const onAuthExit = async (success?: boolean) => {
     setAuthUrl(undefined)
     if (success) {
@@ -38,7 +52,7 @@ export const Device: React.FC<{
             border={false}
           />
         </Grommet.CardHeader>
-        <Grommet.CardBody pad={{ bottom: "medium" }} height="large">
+        <Grommet.CardBody pad={{ bottom: "medium" }}>
           <Grommet.DataTable
             columns={[
               { property: "key", primary: true, header: "Property" },
@@ -59,14 +73,11 @@ export const Device: React.FC<{
         </Grommet.CardBody>
         <Grommet.CardFooter pad={{ horizontal: "small" }}>
           <Grommet.Button
-            icon={<GrommetIcons.Connect size="medium" />}
-            onClick={async () => {
-              const url = await api.acquireAuthenticationLink(device)
-              if (url !== undefined) {
-                setAuthUrl(url)
-              }
-            }}
-            hoverIndicator
+            size="small"
+            icon={<GrommetIcons.Connect size="small" />}
+            label={device.registered ? "Re-authenticate" : "Authenticate"}
+            onClick={onAuthenticate}
+            disabled={acquiringLink}
             tip={"Authenticate"}
           />
         </Grommet.CardFooter>

@@ -31,8 +31,7 @@ export const Devices: React.FC = () => {
           <Loader />
         ) : (
           <Grommet.Button
-            size="large"
-            primary
+            size="small"
             disabled={isDiscovering}
             onClick={refresh}
             label="Refresh Devices"
