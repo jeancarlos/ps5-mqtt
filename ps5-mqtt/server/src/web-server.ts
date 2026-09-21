@@ -63,14 +63,20 @@ export function setupWebserver(
         }
       }
 
-      // ponytail: substring match on the device id. playactor owns the
-      // credentials file shape, so this stays decoupled from it; parse it
-      // properly if that shape ever becomes part of its public API.
-      let storedCredentials = ""
+      // playactor stores credentials as a JSON object keyed by device id, so
+      // check for the key. A substring search over the raw text reports a
+      // device as paired whenever its id happens to appear inside another
+      // entry's blob.
+      let pairedIds = new Set<string>()
       try {
-        storedCredentials = existsSync(credentialStoragePath)
-          ? readFileSync(credentialStoragePath, "utf8")
-          : ""
+        if (existsSync(credentialStoragePath)) {
+          const parsed: unknown = JSON.parse(
+            readFileSync(credentialStoragePath, "utf8"),
+          )
+          if (parsed !== null && typeof parsed === "object") {
+            pairedIds = new Set(Object.keys(parsed))
+          }
+        }
       } catch (e) {
         logError(e)
       }
@@ -80,7 +86,7 @@ export function setupWebserver(
       res.send({
         devices: devices.map((device) => ({
           ...device,
-          registered: storedCredentials.includes(device.id),
+          registered: pairedIds.has(device.id),
           activity: deviceState.find((d) => d?.id === device.id)?.activity,
         })),
       })
