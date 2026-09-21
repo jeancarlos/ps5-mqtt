@@ -14,6 +14,11 @@ export interface IDeviceAddress {
   port: number
 }
 
+export interface IActivity {
+  titleId?: string
+  titleName?: string
+}
+
 export interface IDevice {
   id: string
   name: string
@@ -22,6 +27,7 @@ export interface IDevice {
   type?: string
   systemVersion?: string
   address?: IDeviceAddress
+  activity?: IActivity
 }
 
 export interface ILogger {

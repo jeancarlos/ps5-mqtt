@@ -86,6 +86,20 @@ export const Device: React.FC<{
         </Grommet.CardHeader>
 
         <Grommet.CardBody gap="small">
+          {!!device.activity?.titleName && (
+            <Grommet.Box
+              direction="row"
+              gap="small"
+              align="center"
+              pad={{ vertical: "xsmall" }}
+            >
+              <GrommetIcons.Gamepad size="small" color="awake" />
+              <Grommet.Text size="small" weight={500} truncate>
+                {device.activity.titleName}
+              </Grommet.Text>
+            </Grommet.Box>
+          )}
+
           <Detail
             label="Address"
             value={
