@@ -1,4 +1,4 @@
-import type { DiscoveryResponse, IDevice, ILogger, Stats } from "./types"
+import type {DiscoveryResponse, IDevice, ILogger} from "./types"
 
 export default class Api {
   constructor(private readonly logger: ILogger) {}
@@ -7,7 +7,7 @@ export default class Api {
     device: IDevice,
     pin: string,
     url: string,
-  ): Promise<string> {
+  ): Promise<string | undefined> {
     try {
       const res = await fetch("api/connect", {
         method: "POST",
