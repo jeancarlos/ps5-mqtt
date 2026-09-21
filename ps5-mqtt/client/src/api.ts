@@ -53,17 +53,6 @@ export default class Api {
     }
   }
 
-  async getStats(): Promise<Stats | undefined> {
-    try {
-      const res = await fetch("api/stats", {
-        method: "GET",
-      })
-      return await res.json()
-    } catch (e) {
-      this.logger.error(e)
-      return undefined
-    }
-  }
 
   async getDevices(): Promise<IDevice[] | undefined> {
     try {
