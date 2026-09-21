@@ -102,7 +102,14 @@ export const Loader = () => {
   const baseDelay = 300
 
   return (
-    <Grommet.Box align="center" direction="row" gap="medium" pad="large">
+    <Grommet.Box
+      align="center"
+      justify="center"
+      direction="row"
+      gap="medium"
+      pad="large"
+      fill="horizontal"
+    >
       <RoundSpinner url="img/PlayStationCross.svg" />
       <RoundSpinner url="img/PlayStationCircle.svg" delay={baseDelay * 1} />
       <RoundSpinner url="img/PlayStationTriangle.svg" delay={baseDelay * 2} />
