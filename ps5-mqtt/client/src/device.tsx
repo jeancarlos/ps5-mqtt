@@ -21,10 +21,16 @@ export const Device: React.FC<{ device: IDevice }> = ({ device }) => {
           { type: "fadeIn", duration: 500, size: "large" },
         ]}
       >
-        <Grommet.CardHeader pad="medium">
+        <Grommet.CardHeader pad="medium" justify="between">
           <Grommet.Heading level="2" margin={{ vertical: "none" }}>
             {device.name}
           </Grommet.Heading>
+          <Grommet.Tag
+            size="small"
+            value={device.registered ? "Paired" : "Not paired"}
+            background={device.registered ? "status-ok" : "status-warning"}
+            border={false}
+          />
         </Grommet.CardHeader>
         <Grommet.CardBody pad={{ bottom: "medium" }} height="large">
           <Grommet.DataTable

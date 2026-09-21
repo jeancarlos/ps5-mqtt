@@ -1,6 +1,7 @@
 import bodyParser from "body-parser"
 import createDebugger from "debug"
 import express, { Express } from "express"
+import { existsSync, readFileSync } from "fs"
 import path from "path"
 
 import { Discovery } from "playactor/dist/discovery"
@@ -57,8 +58,23 @@ export function setupWebserver(
         }
       }
 
+      // ponytail: substring match on the device id. playactor owns the
+      // credentials file shape, so this stays decoupled from it; parse it
+      // properly if that shape ever becomes part of its public API.
+      let storedCredentials = ""
+      try {
+        storedCredentials = existsSync(credentialStoragePath)
+          ? readFileSync(credentialStoragePath, "utf8")
+          : ""
+      } catch (e) {
+        logError(e)
+      }
+
       res.send({
-        devices,
+        devices: devices.map((device) => ({
+          ...device,
+          registered: storedCredentials.includes(device.id),
+        })),
       })
     } catch (e) {
       logError(e)

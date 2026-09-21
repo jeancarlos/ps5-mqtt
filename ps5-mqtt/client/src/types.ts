@@ -12,6 +12,7 @@ export interface IDevice {
   id: string
   name: string
   status: "AWAKE" | "STANDBY"
+  registered?: boolean
 }
 
 export interface ILogger {
