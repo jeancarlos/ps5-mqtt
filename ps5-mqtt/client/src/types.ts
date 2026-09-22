@@ -14,6 +14,13 @@ export interface IDeviceAddress {
   port: number
 }
 
+export interface IPsnAccount {
+  connected: boolean
+  accountName?: string
+  refreshTokenExpiresAt?: number
+  expiresInMs?: number | null
+}
+
 export interface IActivity {
   titleId?: string
   titleName?: string

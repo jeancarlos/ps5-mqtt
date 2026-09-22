@@ -13,6 +13,8 @@ import { OauthCredentialRequester } from "playactor/dist/credentials/oauth/reque
 import { WriteOnlyStorage } from "playactor/dist/credentials/write-only-storage"
 
 import { pollAgeMs } from "./health"
+import { PsnAccount } from "./psn-account"
+import { PsnAuthStore } from "./psn-auth-store"
 import { Settings } from "./services"
 import { createErrorLogger } from "./util/error-logger"
 
@@ -34,6 +36,7 @@ export function setupWebserver(
   // keeps the web server from depending on the store itself.
   getDeviceState: () => Record<string, { id?: string; activity?: unknown }> = () =>
     ({}),
+  dispatch?: (action: unknown) => void,
 ): Express {
   if (app !== undefined) {
     throw Error("web server is already running")
@@ -56,6 +59,62 @@ export function setupWebserver(
     const age = pollAgeMs()
     const ok = age !== undefined && age <= maxPollAgeMs
     res.status(ok ? 200 : 503).send({ ok, pollAgeMs: age ?? null, maxPollAgeMs })
+  })
+
+  // Reading the store rather than app config: an account added at runtime is
+  // only in the store, and config is only the bootstrap seed.
+  async function psnAccountSummary() {
+    const accounts = await PsnAuthStore.list()
+    const first = accounts[0]
+    if (first === undefined) {
+      return { connected: false as const }
+    }
+    const expiresAt = first.authInfo.refreshTokenExpiration
+    return {
+      connected: true as const,
+      accountName: first.accountName,
+      refreshTokenExpiresAt: expiresAt,
+      // Negative once it lapses, which is what the UI warns on. An expired
+      // token is not an unhealthy process, so it never fails the healthcheck:
+      // restarting cannot renew it and would only produce a restart loop.
+      expiresInMs: expiresAt === undefined ? null : expiresAt - Date.now(),
+    }
+  }
+
+  app.get("/api/psn-account", async (req, res) => {
+    try {
+      res.send(await psnAccountSummary())
+    } catch (e) {
+      logError(e)
+      res.status(500).send({ error: "could not read the account store" })
+    }
+  })
+
+  app.post("/api/psn-account", async (req, res) => {
+    const { npsso } = req.body as { npsso?: string }
+    if (typeof npsso !== "string" || npsso.trim() === "") {
+      res.status(400).send({ error: "npsso is required" })
+      return
+    }
+    try {
+      // Exchanging before saving means an invalid or expired token is rejected
+      // here, with a reason, instead of being stored and going quietly unused.
+      const account = await PsnAccount.exchangeNpssoForPsnAccount(
+        npsso.trim(),
+        undefined,
+        (dispatch ?? (() => undefined)) as never,
+      )
+      res.send({
+        connected: true,
+        accountName: account.accountName,
+        refreshTokenExpiresAt: account.authInfo.refreshTokenExpiration,
+      })
+    } catch (e) {
+      logError(e)
+      res.status(400).send({
+        error: "Sony rejected that token. Make sure it was copied from a signed-in session and has not expired.",
+      })
+    }
   })
 
   app.get("/api/discover", async (req, res) => {
