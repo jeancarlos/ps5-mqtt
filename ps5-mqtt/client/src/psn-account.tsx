@@ -8,6 +8,18 @@ const SSO_COOKIE_URL = "https://ca.account.sony.com/api/v1/ssocookie"
 
 const DAY_MS = 86400000
 
+// The Sony page is HTTPS and this app is HTTP, so an active request from there
+// to here is blocked as mixed content. A top-level navigation is not, and the
+// fragment never reaches the server or its logs. The receiving page strips it
+// from history immediately.
+const bookmarklet = (origin: string) =>
+  "javascript:(function(){try{var j=JSON.parse(document.body.innerText);" +
+  "if(!j.npsso){alert('Open the Sony token page first.');return}" +
+  "location.replace('" +
+  origin +
+  "/#npsso='+encodeURIComponent(j.npsso))}catch(e){" +
+  "alert('No token found on this page.')}})()" 
+
 export const PsnAccountStatus: React.FC = () => {
   const { api } = React.useContext(AppContext)
   const [account, setAccount] = React.useState<IPsnAccount | undefined>()
@@ -23,6 +35,28 @@ export const PsnAccountStatus: React.FC = () => {
   React.useEffect(() => {
     load()
   }, [load])
+
+  // Arrives by fragment from the bookmarklet. Cleared from history before the
+  // request so the token is not left sitting in the address bar or back stack.
+  React.useEffect(() => {
+    const match = /[#&]npsso=([^&]+)/.exec(window.location.hash)
+    if (match === null) {
+      return
+    }
+    const token = decodeURIComponent(match[1])
+    window.history.replaceState(null, "", window.location.pathname)
+    ;(async () => {
+      setBusy(true)
+      const failure = await api.connectPsnAccount(token)
+      setBusy(false)
+      if (failure !== undefined) {
+        setError(failure)
+        setOpen(true)
+        return
+      }
+      await load()
+    })()
+  }, [api, load])
 
   const submit = async () => {
     setBusy(true)
@@ -93,6 +127,18 @@ export const PsnAccountStatus: React.FC = () => {
               label="Open the token page"
               icon={<GrommetIcons.Link size="small" />}
             />
+
+            <Grommet.Box gap="xsmall">
+              <Grommet.Text size="small" color="text-weak">
+                Or drag this to the bookmarks bar and click it while on the
+                token page — it fills this in for you.
+              </Grommet.Text>
+              <Grommet.Anchor
+                href={bookmarklet(window.location.origin)}
+                label="Send npsso to ps5-mqtt"
+                onClick={(e: React.MouseEvent) => e.preventDefault()}
+              />
+            </Grommet.Box>
 
             <Grommet.TextInput
               placeholder="npsso"
