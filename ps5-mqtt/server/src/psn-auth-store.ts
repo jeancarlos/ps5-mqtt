@@ -76,6 +76,13 @@ export namespace PsnAuthStore {
     )
   }
 
+  // The store is keyed by a hash, so callers that need "what is registered?"
+  // rather than "is this specific one registered?" had no way to ask.
+  export async function list(): Promise<StoredAccountAuthInfo[]> {
+    const store = await readStore()
+    return Object.values(store.accounts)
+  }
+
   export async function findByAccountId(
     accountId: string,
   ): Promise<StoredAccountAuthInfo | undefined> {
