@@ -43,6 +43,20 @@ export namespace PsnAuthStore {
       return envDir
     }
 
+    // Standalone docker mounts neither /data nor the home directory by
+    // default, so the store lands in the container's writable layer and every
+    // recreate silently drops the registered account. An explicit directory
+    // lets such a deployment point this at a volume it actually persists.
+    const configured = process.env.PSN_AUTH_STORE_DIR
+    if (configured !== undefined && configured !== "") {
+      if (await isWritableDirectory(configured)) {
+        return configured
+      }
+      logError(
+        `PSN_AUTH_STORE_DIR is set to '${configured}' but it is not a writable directory; falling back.`,
+      )
+    }
+
     // /data is always mounted for Home Assistant add-ons and survives
     // add-on restarts/updates, regardless of the add-on's `map` config.
     if (await isWritableDirectory("/data")) {
