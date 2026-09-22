@@ -4,6 +4,7 @@ import React from "react"
 import Api from "./api"
 import { AppContext } from "./context"
 import { Devices } from "./devices"
+import { PsnAccountStatus } from "./psn-account"
 import theme from "./theme"
 import type { IMessage } from "./types"
 
@@ -55,7 +56,8 @@ export const App = () => {
             label="PS5-MQTT"
           />
           {/* <Grommet.Avatar src={gravatarLink} /> */}
-          <Grommet.Nav direction="row">
+          <Grommet.Nav direction="row" gap="small" align="center">
+            <PsnAccountStatus />
             <Grommet.Button
               icon={
                 themeMode === "dark" ? (
