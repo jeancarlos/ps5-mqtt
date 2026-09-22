@@ -4,6 +4,7 @@ import type { PlayactorClient } from "../../playactor/client"
 import { PLAYACTOR_CLIENT } from "../../services"
 import { createErrorLogger } from "../../util/error-logger"
 import { updateHomeAssistant } from "../action-creators"
+import { markPoll } from "../../health"
 import { getDeviceList } from "../selectors"
 import type { Device } from "../types"
 
@@ -12,6 +13,8 @@ const errorLogger = createErrorLogger()
 
 function* checkDevicesState() {
   const playactor: PlayactorClient = yield getContext(PLAYACTOR_CLIENT)
+
+  markPoll()
 
   const devices: Device[] = yield select(getDeviceList)
   for (const device of devices) {
