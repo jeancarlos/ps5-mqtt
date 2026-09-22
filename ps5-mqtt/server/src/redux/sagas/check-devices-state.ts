@@ -46,11 +46,15 @@ function* checkDevicesState() {
         )
       }
     } catch (e) {
-      // previously available ps5 cannot be located
+      // A previously available PS5 cannot be located. Availability and power
+      // are separate facts, and the payload already carries device_status for
+      // the first one. Publishing power: "UNKNOWN" additionally destroys the
+      // last known value, and consumers that only map AWAKE/STANDBY - the Home
+      // Assistant switch among them - silently freeze at whatever they held.
+      // Keep the last known power and let device_status say it is unreachable.
       yield put(
         updateHomeAssistant({
           ...device,
-          status: "UNKNOWN",
           available: false,
           activity: undefined,
         }),
