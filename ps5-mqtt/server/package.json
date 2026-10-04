@@ -51,7 +51,7 @@
     "@types/lodash": "^4.17.24",
     "@types/node": "^24.13.3",
     "@types/shelljs": "^0.10.0",
-    "concurrently": "^10.0.3",
+    "concurrently": "^10.0.5",
     "dotenv": "^17.4.2",
     "jest": "^30.4.2",
     "jest-util": "^30.4.1",

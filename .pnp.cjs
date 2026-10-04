@@ -1943,7 +1943,7 @@ const RAW_RUNTIME_STATE =
           ["@types/shelljs", "npm:0.10.0"],\
           ["async-mqtt", "npm:2.6.3"],\
           ["body-parser", "npm:2.3.0"],\
-          ["concurrently", "npm:10.0.3"],\
+          ["concurrently", "npm:10.0.5"],\
           ["debug", "virtual:2ed0814e144e031e4d88e9e132d455f02399bfd8597541ff0fd6b26c3f576c48280865416cf6f9266947f53f58d49d755a71789ebfa2faf61c00a4985b021ce1#npm:4.4.3"],\
           ["dotenv", "npm:17.4.2"],\
           ["express", "npm:4.22.2"],\
@@ -4361,13 +4361,13 @@ const RAW_RUNTIME_STATE =
       }]\
     ]],\
     ["concurrently", [\
-      ["npm:10.0.3", {\
-        "packageLocation": "./.yarn/cache/concurrently-npm-10.0.3-efe139d53b-59a4d9a794.zip/node_modules/concurrently/",\
+      ["npm:10.0.5", {\
+        "packageLocation": "./.yarn/cache/concurrently-npm-10.0.5-6700c0f8d2-2e66ece2f2.zip/node_modules/concurrently/",\
         "packageDependencies": [\
           ["chalk", "npm:5.6.2"],\
-          ["concurrently", "npm:10.0.3"],\
+          ["concurrently", "npm:10.0.5"],\
           ["rxjs", "npm:7.8.2"],\
-          ["shell-quote", "npm:1.8.4"],\
+          ["shell-quote", "npm:1.9.0"],\
           ["supports-color", "npm:10.2.2"],\
           ["tree-kill", "npm:1.2.2"],\
           ["yargs", "npm:18.0.0"]\
@@ -9206,10 +9206,10 @@ const RAW_RUNTIME_STATE =
       }]\
     ]],\
     ["shell-quote", [\
-      ["npm:1.8.4", {\
-        "packageLocation": "./.yarn/cache/shell-quote-npm-1.8.4-13eacaabff-86c93678bc.zip/node_modules/shell-quote/",\
+      ["npm:1.9.0", {\
+        "packageLocation": "./.yarn/cache/shell-quote-npm-1.9.0-50e37d57df-a39960107e.zip/node_modules/shell-quote/",\
         "packageDependencies": [\
-          ["shell-quote", "npm:1.8.4"]\
+          ["shell-quote", "npm:1.9.0"]\
         ],\
         "linkType": "HARD"\
       }]\
