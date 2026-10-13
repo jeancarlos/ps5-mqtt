@@ -8,10 +8,26 @@ export interface DiscoveryResponse {
   devices: IDevice[]
 }
 
+export interface IDeviceAddress {
+  address: string
+  family: string
+  port: number
+}
+
+export interface IActivity {
+  titleId?: string
+  titleName?: string
+}
+
 export interface IDevice {
   id: string
   name: string
   status: "AWAKE" | "STANDBY"
+  registered?: boolean
+  type?: string
+  systemVersion?: string
+  address?: IDeviceAddress
+  activity?: IActivity
 }
 
 export interface ILogger {

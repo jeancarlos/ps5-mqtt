@@ -25,26 +25,29 @@ export const App = () => {
     setThemeMode(themeMode === "dark" ? "light" : "dark")
   }
 
+  const api = React.useMemo(
+    () =>
+      new Api({
+        log: (value) => {
+          setMessage({ type: "info", value: value?.toString() })
+        },
+        error: (value) => {
+          setMessage({ type: "error", value: value?.toString() })
+        },
+      }),
+    [],
+  )
+  const appContext = React.useMemo(() => ({ api }), [api])
+
   return (
-    <AppContext.Provider
-      value={{
-        api: new Api({
-          log: (value) => {
-            setMessage({ type: "info", value: value?.toString() })
-          },
-          error: (value) => {
-            setMessage({ type: "error", value: value?.toString() })
-          },
-        }),
-      }}
-    >
+    <AppContext.Provider value={appContext}>
       <Grommet.Grommet
         theme={theme}
         full={true}
         themeMode={themeMode}
-        background={themeMode === "dark" ? "dark-1" : "light"}
+        background="page"
       >
-        <Grommet.Header pad="small" background={"dark-extra"}>
+        <Grommet.Header pad="small" background="app-bar">
           <Grommet.Anchor
             href="https://github.com/FunkeyFlo/ps5-mqtt/"
             icon={<GrommetIcons.Github />}
@@ -52,7 +55,7 @@ export const App = () => {
             label="PS5-MQTT"
           />
           {/* <Grommet.Avatar src={gravatarLink} /> */}
-          <Grommet.Nav direction="row">
+          <Grommet.Nav direction="row" gap="small" align="center">
             <Grommet.Button
               icon={
                 themeMode === "dark" ? (
@@ -99,7 +102,14 @@ export const Loader = () => {
   const baseDelay = 300
 
   return (
-    <Grommet.Box align="center" direction="row" gap="medium" pad="large">
+    <Grommet.Box
+      align="center"
+      justify="center"
+      direction="row"
+      gap="medium"
+      pad="large"
+      fill="horizontal"
+    >
       <RoundSpinner url="img/PlayStationCross.svg" />
       <RoundSpinner url="img/PlayStationCircle.svg" delay={baseDelay * 1} />
       <RoundSpinner url="img/PlayStationTriangle.svg" delay={baseDelay * 2} />

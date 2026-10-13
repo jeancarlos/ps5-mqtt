@@ -7,7 +7,7 @@ export default class Api {
     device: IDevice,
     pin: string,
     url: string,
-  ): Promise<string> {
+  ): Promise<string | undefined> {
     try {
       const res = await fetch("api/connect", {
         method: "POST",
