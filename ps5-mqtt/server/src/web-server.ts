@@ -10,6 +10,7 @@ import { DiskCredentialsStorage } from "playactor/dist/credentials/disk-storage"
 import { OauthCredentialRequester } from "playactor/dist/credentials/oauth/requester"
 import { WriteOnlyStorage } from "playactor/dist/credentials/write-only-storage"
 
+import { pollAgeMs } from "./health"
 import { discoverDevices } from "./playactor/discovery"
 import { Settings } from "./services"
 import { createErrorLogger } from "./util/error-logger"
@@ -40,6 +41,15 @@ export function setupWebserver(
     express.static(path.join(__dirname, "..", "..", "client", "dist")),
   )
   app.use(bodyParser.json())
+
+  const maxPollAgeMs = Number(process.env.MAX_POLL_AGE_MS ?? 120000)
+  app.get("/api/health", (req, res) => {
+    const age = pollAgeMs()
+    const ok = age !== undefined && age <= maxPollAgeMs
+    res
+      .status(ok ? 200 : 503)
+      .send({ ok, pollAgeMs: age ?? null, maxPollAgeMs })
+  })
 
   app.get("/api/discover", async (req, res) => {
     try {

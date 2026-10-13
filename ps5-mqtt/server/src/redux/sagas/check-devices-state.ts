@@ -1,5 +1,6 @@
 import createDebugger from "debug"
 import { call, getContext, put, select } from "redux-saga/effects"
+import { markPoll } from "../../health"
 import type { PlayactorClient } from "../../playactor/client"
 import { PLAYACTOR_CLIENT } from "../../services"
 import { createErrorLogger } from "../../util/error-logger"
@@ -12,6 +13,8 @@ const errorLogger = createErrorLogger()
 
 function* checkDevicesState() {
   const playactor: PlayactorClient = yield getContext(PLAYACTOR_CLIENT)
+
+  markPoll()
 
   const devices: Device[] = yield select(getDeviceList)
   for (const device of devices) {
