@@ -24,8 +24,8 @@ export const Authenticate: React.FC<{
         onSubmit={async (event) => {
           const { pin, url } = event.value as { pin: string; url: string }
           setAuthenticating(true)
-          await api.connectToDevice(device, pin, url)
-          onDone()
+          const result = await api.connectToDevice(device, pin, url)
+          onDone(result !== undefined)
         }}
         onValidate={(validationResults) => {
           setValid(validationResults.valid)

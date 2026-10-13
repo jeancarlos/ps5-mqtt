@@ -19,10 +19,13 @@ import reducer, {
   updateAccount,
 } from "./redux"
 import { Dispatch, SwitchStatus } from "./redux/types"
+import type { State } from "./redux/types"
 import { MQTT_CLIENT, PLAYACTOR_CLIENT, Settings, SETTINGS } from "./services"
 import { registerShutdownHandlers } from "./shutdown"
 import { createErrorLogger } from "./util/error-logger"
 import { setupWebserver } from "./web-server"
+
+let webServerStore: { getState: () => State } | undefined
 
 const debug = createDebugger("@ha:ps5")
 const debugMqtt = createDebugger("@ha:ps5:mqtt")
@@ -137,6 +140,8 @@ export async function run() {
         accounts: {},
       },
     })
+    webServerStore = store
+
     store.subscribe(() => {
       debugState(JSON.stringify(store.getState(), null, 2))
     })
@@ -205,5 +210,9 @@ export async function run() {
     logError(e)
   }
 
-  setupWebserver(appConfig.frontendPort ?? 3000, settings)
+  setupWebserver(
+    appConfig.frontendPort ?? 3000,
+    settings,
+    () => webServerStore?.getState(),
+  )
 }

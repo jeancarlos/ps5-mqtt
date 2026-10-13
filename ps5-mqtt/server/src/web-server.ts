@@ -1,6 +1,7 @@
 import bodyParser from "body-parser"
 import createDebugger from "debug"
 import express, { Express } from "express"
+import { existsSync, readFileSync } from "fs"
 import path from "path"
 
 import { IDiscoveredDevice } from "playactor/dist/discovery/model"
@@ -12,6 +13,7 @@ import { WriteOnlyStorage } from "playactor/dist/credentials/write-only-storage"
 
 import { pollAgeMs } from "./health"
 import { discoverDevices } from "./playactor/discovery"
+import type { State } from "./redux/types"
 import { Settings } from "./services"
 import { createErrorLogger } from "./util/error-logger"
 
@@ -28,6 +30,7 @@ export function setupWebserver(
     credentialStoragePath,
     deviceDiscoveryBroadcastAddress,
   }: Settings,
+  getState: () => State | undefined,
 ): Express {
   if (app !== undefined) {
     throw Error("web server is already running")
@@ -59,8 +62,28 @@ export function setupWebserver(
         timeoutMillis: 5000,
       })
 
+      let pairedIds = new Set<string>()
+      try {
+        if (existsSync(credentialStoragePath)) {
+          const parsed: unknown = JSON.parse(
+            readFileSync(credentialStoragePath, "utf8"),
+          )
+          if (parsed !== null && typeof parsed === "object") {
+            pairedIds = new Set(Object.keys(parsed))
+          }
+        }
+      } catch (e) {
+        logError(e)
+      }
+
+      const deviceState = Object.values(getState()?.devices ?? {})
+
       res.send({
-        devices,
+        devices: devices.map((device) => ({
+          ...device,
+          registered: pairedIds.has(device.id),
+          activity: deviceState.find((d) => d?.id === device.id)?.activity,
+        })),
       })
     } catch (e) {
       logError(e)
