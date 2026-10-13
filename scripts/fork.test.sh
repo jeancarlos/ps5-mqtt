@@ -31,6 +31,9 @@ upstream_commit() {
   (cd "$TMP/up" && eval "$1" && git add -A && git commit -qm "$2")
 }
 
+grep '^CHECKS=' "$FORK_SH" | grep -qE 'yarn [a-z]+/' && fail "a bare 'yarn script/name' runs yarn install, not the script"
+echo "ok: default checks run slash-named scripts through yarn run"
+
 setup
 upstream_commit "echo two > app.txt" "upstream change"
 CHECKS=true bash "$FORK_SH" sync >/dev/null
