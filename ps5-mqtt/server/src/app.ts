@@ -26,9 +26,6 @@ import { registerShutdownHandlers } from "./shutdown"
 import { createErrorLogger } from "./util/error-logger"
 import { setupWebserver } from "./web-server"
 
-// The store is created inside the bootstrap try block, below the scope the web
-// server is started from. This reference bridges the two without widening the
-// store's lifetime or changing what the catch covers.
 let webServerStore: { getState: () => State; dispatch: Dispatch } | undefined
 
 const debug = createDebugger("@ha:ps5")

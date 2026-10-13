@@ -15,9 +15,6 @@ export const Devices: React.FC = () => {
   const refresh = React.useCallback(async () => {
     setIsDiscovering(true)
     try {
-      // getDevices resolves undefined on any failure. Assigning that straight
-      // to state would drop a good list on a transient error and leave the
-      // view claiming it is still searching.
       const found = await api.getDevices()
       setFailed(found === undefined)
       if (found !== undefined) {

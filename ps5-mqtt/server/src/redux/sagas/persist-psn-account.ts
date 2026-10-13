@@ -12,6 +12,16 @@ import type {
 // same UPDATE_PSN_ACCOUNT action that already drives device/activity
 // matching (see update-account.ts), plus PERSIST_PROVISIONAL_PSN_TOKENS for
 // the narrow pre-accountId bootstrap window.
+let saves: Promise<void> = Promise.resolve()
+
+function saveInOrder(
+  ...args: Parameters<typeof PsnAuthStore.save>
+): Promise<void> {
+  const next = saves.then(() => PsnAuthStore.save(...args))
+  saves = next.catch(() => undefined)
+  return next
+}
+
 function* persistPsnAccount(
   action: UpdateAccountAction | PersistProvisionalPsnTokensAction,
 ) {
@@ -37,7 +47,7 @@ function* persistPsnAccount(
   }
 
   yield call(
-    PsnAuthStore.save,
+    saveInOrder,
     PsnAuthStore.resolveKey(accountId, npsso),
     {
       npssoHash:

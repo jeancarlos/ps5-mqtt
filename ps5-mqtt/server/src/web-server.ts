@@ -32,9 +32,6 @@ export function setupWebserver(
     credentialStoragePath,
     deviceDiscoveryBroadcastAddress,
   }: Settings,
-  // Discovery answers with what the console broadcasts; the running title only
-  // exists in the store, which is what gets published to MQTT. Passing a getter
-  // keeps the web server from depending on the store itself.
   getState: () => State | undefined,
   dispatch: Dispatch,
 ): Express {
@@ -51,9 +48,6 @@ export function setupWebserver(
   )
   app.use(bodyParser.json())
 
-  // 503 rather than a body the caller has to interpret, so a container
-  // healthcheck is a plain status check. The window is generous: the poll runs
-  // every DEVICE_CHECK_INTERVAL, so this only trips after many missed cycles.
   const maxPollAgeMs = Number(process.env.MAX_POLL_AGE_MS ?? 120000)
   app.get("/api/health", (req, res) => {
     const age = pollAgeMs()
@@ -63,8 +57,6 @@ export function setupWebserver(
       .send({ ok, pollAgeMs: age ?? null, maxPollAgeMs })
   })
 
-  // Reading the store rather than app config: an account added at runtime is
-  // only in the store, and config is only the bootstrap seed.
   async function psnAccountSummary() {
     const first = Object.values(getState()?.accounts ?? {})[0]
     if (first === undefined) {
@@ -75,9 +67,6 @@ export function setupWebserver(
       connected: true as const,
       accountName: first.accountName,
       refreshTokenExpiresAt: expiresAt,
-      // Negative once it lapses, which is what the UI warns on. An expired
-      // token is not an unhealthy process, so it never fails the healthcheck:
-      // restarting cannot renew it and would only produce a restart loop.
       expiresInMs: expiresAt === undefined ? null : expiresAt - Date.now(),
     }
   }
@@ -102,8 +91,6 @@ export function setupWebserver(
       return
     }
     try {
-      // Exchanging before saving means an invalid or expired token is rejected
-      // here, with a reason, instead of being stored and going quietly unused.
       const account = await PsnAccount.exchangeNpssoForPsnAccount(
         npsso.trim(),
         undefined,
@@ -138,10 +125,6 @@ export function setupWebserver(
         timeoutMillis: 5000,
       })
 
-      // playactor stores credentials as a JSON object keyed by device id, so
-      // check for the key. A substring search over the raw text reports a
-      // device as paired whenever its id happens to appear inside another
-      // entry's blob.
       let pairedIds = new Set<string>()
       try {
         if (existsSync(credentialStoragePath)) {

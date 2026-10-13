@@ -149,4 +149,27 @@ describe("persistPsnAccount saga", () => {
       undefined,
     )
   })
+
+  test("writes one account at a time so concurrent saves cannot drop each other", async () => {
+    mockedFindByAccountId.mockResolvedValue(undefined)
+    let active = 0
+    let maxActive = 0
+    mockedSave.mockImplementation(async () => {
+      active += 1
+      maxActive = Math.max(maxActive, active)
+      await new Promise((resolve) => setTimeout(resolve, 5))
+      active -= 1
+    })
+
+    await Promise.all([
+      run({ type: "UPDATE_PSN_ACCOUNT", payload: account }),
+      run({
+        type: "UPDATE_PSN_ACCOUNT",
+        payload: { ...account, accountId: "account-2" },
+      }),
+    ])
+
+    expect(mockedSave).toHaveBeenCalledTimes(2)
+    expect(maxActive).toBe(1)
+  })
 })

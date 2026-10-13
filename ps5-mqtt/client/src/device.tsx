@@ -5,8 +5,6 @@ import { Authenticate } from "./authenticate"
 import { AppContext } from "./context"
 import type { IDevice } from "./types"
 
-// "13600007" is how the console reports 13.60; the trailing digits are build
-// noise. Anything unexpected is shown untouched rather than mangled.
 const formatSystemVersion = (raw?: string): string | undefined => {
   if (!raw || !/^\d{4,}$/.test(raw)) {
     return raw

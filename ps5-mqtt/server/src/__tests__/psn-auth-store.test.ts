@@ -293,31 +293,4 @@ describe("PsnAuthStore", () => {
       expect(mockedWriteFile).not.toHaveBeenCalled()
     })
   })
-
-  test("concurrent saves keep every account", async () => {
-    const files: Record<string, string> = {}
-    mockedReadFile.mockImplementation((async (file: string) => {
-      if (!(file in files)) {
-        throw enoent()
-      }
-      return files[file]
-    }) as never)
-    mockedWriteFile.mockImplementation((async (file: string, data: string) => {
-      files[file] = data
-    }) as never)
-    mockedRename.mockImplementation(async (from, to) => {
-      files[to as string] = files[from as string]
-    })
-
-    await Promise.all([
-      PsnAuthStore.save("account-a", { npssoHash: "a", authInfo }),
-      PsnAuthStore.save("account-b", { npssoHash: "b", authInfo }),
-    ])
-
-    const stored = JSON.parse(files[path.join("/store", "psn-auth.json")])
-    expect(Object.keys(stored.accounts).sort()).toEqual([
-      "account-a",
-      "account-b",
-    ])
-  })
 })

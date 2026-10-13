@@ -1,9 +1,6 @@
 import { grommet, ThemeType } from "grommet"
 import { deepMerge } from "grommet/utils"
 
-// Every colour below carries both a dark and a light value. Flat hex strings
-// look fine in one mode and wrong in the other, which is what made the theme
-// toggle appear to do nothing.
 const theme = deepMerge(grommet, <ThemeType>{
   global: {
     colors: {
