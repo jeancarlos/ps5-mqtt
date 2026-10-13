@@ -42,6 +42,7 @@ describe("restorePersistedPsnAccounts", () => {
     mockedList.mockResolvedValue([
       stored("configured"),
       stored(undefined),
+      null as unknown as PsnAuthStore.StoredAccountAuthInfo,
       stored("broken"),
       stored("ui-added"),
     ])

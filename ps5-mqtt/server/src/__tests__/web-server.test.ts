@@ -40,7 +40,7 @@ describe("web server", () => {
 
   beforeEach(() => {
     jest.clearAllMocks()
-    state = undefined
+    state = { devices: {}, accounts: {} }
   })
 
   const postPsnAccount = (body: unknown) =>
@@ -119,5 +119,20 @@ describe("web server", () => {
       connected: true,
       accountName: "player",
     })
+  })
+
+  test("refuses to connect an account before the store exists", async () => {
+    state = undefined
+
+    const res = await postPsnAccount({ npsso: "npsso-value" })
+
+    expect(res.status).toBe(503)
+    expect(mockedExchangeNpssoForPsnAccount).not.toHaveBeenCalled()
+  })
+
+  test("reports no account when the store has none", async () => {
+    const res = await fetch(`${baseUrl}/api/psn-account`)
+
+    expect(await res.json()).toEqual({ connected: false })
   })
 })

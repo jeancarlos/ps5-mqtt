@@ -14,7 +14,6 @@ import { WriteOnlyStorage } from "playactor/dist/credentials/write-only-storage"
 import { pollAgeMs } from "./health"
 import { discoverDevices } from "./playactor/discovery"
 import { PsnAccount } from "./psn-account"
-import { PsnAuthStore } from "./psn-auth-store"
 import { updateAccount } from "./redux/action-creators"
 import type { Dispatch, State } from "./redux/types"
 import { Settings } from "./services"
@@ -67,9 +66,7 @@ export function setupWebserver(
   // Reading the store rather than app config: an account added at runtime is
   // only in the store, and config is only the bootstrap seed.
   async function psnAccountSummary() {
-    const first =
-      Object.values(getState()?.accounts ?? {})[0] ??
-      (await PsnAuthStore.list())[0]
+    const first = Object.values(getState()?.accounts ?? {})[0]
     if (first === undefined) {
       return { connected: false as const }
     }
@@ -95,6 +92,10 @@ export function setupWebserver(
   })
 
   app.post("/api/psn-account", async (req, res) => {
+    if (getState() === undefined) {
+      res.status(503).send({ error: "the server did not finish starting" })
+      return
+    }
     const { npsso } = req.body as { npsso?: string }
     if (typeof npsso !== "string" || npsso.trim() === "") {
       res.status(400).send({ error: "npsso is required" })

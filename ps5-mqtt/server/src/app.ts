@@ -91,19 +91,19 @@ export async function restorePersistedPsnAccounts(
   dispatch: Dispatch,
 ): Promise<void> {
   for (const stored of await PsnAuthStore.list()) {
-    if (
-      stored.accountId === undefined ||
-      getState().accounts[stored.accountId] !== undefined
-    ) {
-      continue
-    }
     try {
+      if (
+        stored.accountId === undefined ||
+        getState().accounts[stored.accountId] !== undefined
+      ) {
+        continue
+      }
       const account = await PsnAccount.restoreFromStore(stored)
       dispatch(updateAccount({ ...account, preferredDevices: {} }))
     } catch (e) {
       logError(e)
       logError(
-        `Saved account '${stored.accountName ?? stored.accountId}' could not be restored. Connect it again from the UI.`,
+        `Saved account '${stored?.accountName ?? stored?.accountId}' could not be restored. Connect it again from the UI.`,
       )
     }
   }
@@ -177,11 +177,7 @@ export async function run() {
     // Bootstrapping accounts dispatches through the store (persist-psn-account
     // saga included), so it can only happen once the store/saga middleware
     // above are running.
-    await bootstrapPsnAccounts(
-      appConfig.psn_accounts ?? [],
-      store.dispatch,
-    )
-    await restorePersistedPsnAccounts(store.getState, store.dispatch)
+    await bootstrapPsnAccounts(appConfig.psn_accounts ?? [], store.dispatch)
     createDebugger("@ha:ps5-sensitive:registered-accounts")(
       store.getState().accounts,
     )
@@ -228,6 +224,7 @@ export async function run() {
     await mqtt.subscribe("ps5-mqtt/#")
 
     store.dispatch(pollPsnPresence())
+    restorePersistedPsnAccounts(store.getState, store.dispatch).catch(logError)
 
     store.dispatch(pollDiscovery())
     store.dispatch(pollDevices())
