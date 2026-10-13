@@ -62,6 +62,11 @@ export namespace PsnAuthStore {
     )
   }
 
+  export async function list(): Promise<StoredAccountAuthInfo[]> {
+    const store = await readStore()
+    return Object.values(store.accounts)
+  }
+
   export async function findByAccountId(
     accountId: string,
   ): Promise<StoredAccountAuthInfo | undefined> {

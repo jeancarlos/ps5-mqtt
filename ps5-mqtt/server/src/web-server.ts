@@ -13,7 +13,9 @@ import { WriteOnlyStorage } from "playactor/dist/credentials/write-only-storage"
 
 import { pollAgeMs } from "./health"
 import { discoverDevices } from "./playactor/discovery"
-import type { State } from "./redux/types"
+import { PsnAccount } from "./psn-account"
+import { updateAccount } from "./redux/action-creators"
+import type { Dispatch, State } from "./redux/types"
 import { Settings } from "./services"
 import { createErrorLogger } from "./util/error-logger"
 
@@ -31,6 +33,7 @@ export function setupWebserver(
     deviceDiscoveryBroadcastAddress,
   }: Settings,
   getState: () => State | undefined,
+  dispatch: Dispatch,
 ): Express {
   if (app !== undefined) {
     throw Error("web server is already running")
@@ -52,6 +55,66 @@ export function setupWebserver(
     res
       .status(ok ? 200 : 503)
       .send({ ok, pollAgeMs: age ?? null, maxPollAgeMs })
+  })
+
+  async function psnAccountSummary() {
+    const first = Object.values(getState()?.accounts ?? {})[0]
+    if (first === undefined) {
+      return { connected: false as const }
+    }
+    const expiresAt = first.authInfo.refreshTokenExpiration
+    return {
+      connected: true as const,
+      accountName: first.accountName,
+      refreshTokenExpiresAt: expiresAt,
+      expiresInMs: expiresAt === undefined ? null : expiresAt - Date.now(),
+    }
+  }
+
+  app.get("/api/psn-account", async (req, res) => {
+    try {
+      res.send(await psnAccountSummary())
+    } catch (e) {
+      logError(e)
+      res.status(500).send({ error: "could not read the account store" })
+    }
+  })
+
+  app.post("/api/psn-account", async (req, res) => {
+    if (getState() === undefined) {
+      res.status(503).send({ error: "the server did not finish starting" })
+      return
+    }
+    const { npsso } = req.body as { npsso?: string }
+    if (typeof npsso !== "string" || npsso.trim() === "") {
+      res.status(400).send({ error: "npsso is required" })
+      return
+    }
+    try {
+      const account = await PsnAccount.exchangeNpssoForPsnAccount(
+        npsso.trim(),
+        undefined,
+        dispatch,
+      )
+      dispatch(
+        updateAccount({
+          ...account,
+          preferredDevices:
+            getState()?.accounts[account.accountId]?.preferredDevices ?? {},
+        }),
+      )
+      res.send({
+        connected: true,
+        accountName: account.accountName,
+        refreshTokenExpiresAt: account.authInfo.refreshTokenExpiration,
+      })
+    } catch (e) {
+      logError(e)
+      res.status(400).send({
+        error:
+          "Sony rejected that token. Make sure it was copied from a signed-in session and has not expired.",
+      })
+    }
   })
 
   app.get("/api/discover", async (req, res) => {

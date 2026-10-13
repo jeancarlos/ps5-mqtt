@@ -1,4 +1,10 @@
-import type { DiscoveryResponse, IDevice, ILogger, Stats } from "./types"
+import type {
+  DiscoveryResponse,
+  IDevice,
+  ILogger,
+  IPsnAccount,
+  Stats,
+} from "./types"
 
 export default class Api {
   constructor(private readonly logger: ILogger) {}
@@ -63,6 +69,38 @@ export default class Api {
       this.logger.error(e)
       return undefined
     }
+  }
+
+  async getPsnAccount(): Promise<IPsnAccount | undefined> {
+    try {
+      const res = await fetch("api/psn-account", { method: "GET" })
+      if (!res.ok) {
+        throw new Error(`GET api/psn-account answered HTTP ${res.status}`)
+      }
+      return (await res.json()) as IPsnAccount
+    } catch (e) {
+      this.logger.error(e)
+      return undefined
+    }
+  }
+
+  async connectPsnAccount(npsso: string): Promise<string | undefined> {
+    let res: Response
+    try {
+      res = await fetch("api/psn-account", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ npsso }),
+      })
+    } catch (e) {
+      this.logger.error(e)
+      return "Could not reach the add-on. Try again in a moment."
+    }
+    if (res.ok) {
+      return undefined
+    }
+    const body = (await res.json().catch(() => ({}))) as { error?: string }
+    return body.error ?? `HTTP ${res.status}`
   }
 
   async getDevices(): Promise<IDevice[] | undefined> {

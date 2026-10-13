@@ -9,19 +9,19 @@ import { Account } from "../types"
 const errorLogger = createErrorLogger()
 
 function* checkPsnPresence() {
-  try {
-    const accounts: Account[] = yield select(getAccounts)
+  const accounts: Account[] = yield select(getAccounts)
 
-    for (const account of accounts) {
+  for (const account of accounts) {
+    try {
       const updatedAccount = yield call<typeof PsnAccount.updateAccount>(
         PsnAccount.updateAccount,
         account,
       )
 
       yield put(updateAccount(updatedAccount))
+    } catch (e) {
+      errorLogger(e)
     }
-  } catch (e) {
-    errorLogger(e)
   }
 }
 
