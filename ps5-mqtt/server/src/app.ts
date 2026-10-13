@@ -19,16 +19,16 @@ import reducer, {
   updateAccount,
 } from "./redux"
 import { Dispatch, SwitchStatus } from "./redux/types"
+import type { State } from "./redux/types"
 import { MQTT_CLIENT, PLAYACTOR_CLIENT, Settings, SETTINGS } from "./services"
 import { registerShutdownHandlers } from "./shutdown"
 import { createErrorLogger } from "./util/error-logger"
 import { setupWebserver } from "./web-server"
 
 // The store is created inside the bootstrap try block, below the scope the web
-// server is started from. This getter bridges the two without widening the
+// server is started from. This reference bridges the two without widening the
 // store's lifetime or changing what the catch covers.
-let getDeviceStateForWebServer: () => Record<string, never> = () =>
-  ({}) as Record<string, never>
+let webServerStore: { getState: () => State; dispatch: Dispatch } | undefined
 
 const debug = createDebugger("@ha:ps5")
 const debugMqtt = createDebugger("@ha:ps5:mqtt")
@@ -143,8 +143,7 @@ export async function run() {
         accounts: {},
       },
     })
-    getDeviceStateForWebServer = () =>
-      store.getState().devices as unknown as Record<string, never>
+    webServerStore = store
 
     store.subscribe(() => {
       debugState(JSON.stringify(store.getState(), null, 2))
@@ -214,7 +213,10 @@ export async function run() {
     logError(e)
   }
 
-  setupWebserver(appConfig.frontendPort ?? 3000, settings, () =>
-    getDeviceStateForWebServer(),
+  setupWebserver(
+    appConfig.frontendPort ?? 3000,
+    settings,
+    () => webServerStore?.getState().devices ?? {},
+    (action) => webServerStore?.dispatch(action),
   )
 }

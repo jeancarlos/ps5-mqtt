@@ -11,10 +11,12 @@ import { DiskCredentialsStorage } from "playactor/dist/credentials/disk-storage"
 import { OauthCredentialRequester } from "playactor/dist/credentials/oauth/requester"
 import { WriteOnlyStorage } from "playactor/dist/credentials/write-only-storage"
 
-import { discoverDevices } from "./playactor/discovery"
 import { pollAgeMs } from "./health"
+import { discoverDevices } from "./playactor/discovery"
 import { PsnAccount } from "./psn-account"
 import { PsnAuthStore } from "./psn-auth-store"
+import { updateAccount } from "./redux/action-creators"
+import type { Dispatch } from "./redux/types"
 import { Settings } from "./services"
 import { createErrorLogger } from "./util/error-logger"
 
@@ -34,9 +36,8 @@ export function setupWebserver(
   // Discovery answers with what the console broadcasts; the running title only
   // exists in the store, which is what gets published to MQTT. Passing a getter
   // keeps the web server from depending on the store itself.
-  getDeviceState: () => Record<string, { id?: string; activity?: unknown }> = () =>
-    ({}),
-  dispatch?: (action: unknown) => void,
+  getDeviceState: () => Record<string, { id?: string; activity?: unknown }>,
+  dispatch: Dispatch,
 ): Express {
   if (app !== undefined) {
     throw Error("web server is already running")
@@ -58,7 +59,9 @@ export function setupWebserver(
   app.get("/api/health", (req, res) => {
     const age = pollAgeMs()
     const ok = age !== undefined && age <= maxPollAgeMs
-    res.status(ok ? 200 : 503).send({ ok, pollAgeMs: age ?? null, maxPollAgeMs })
+    res
+      .status(ok ? 200 : 503)
+      .send({ ok, pollAgeMs: age ?? null, maxPollAgeMs })
   })
 
   // Reading the store rather than app config: an account added at runtime is
@@ -102,8 +105,9 @@ export function setupWebserver(
       const account = await PsnAccount.exchangeNpssoForPsnAccount(
         npsso.trim(),
         undefined,
-        (dispatch ?? (() => undefined)) as never,
+        dispatch,
       )
+      dispatch(updateAccount({ ...account, preferredDevices: {} }))
       res.send({
         connected: true,
         accountName: account.accountName,
@@ -112,7 +116,8 @@ export function setupWebserver(
     } catch (e) {
       logError(e)
       res.status(400).send({
-        error: "Sony rejected that token. Make sure it was copied from a signed-in session and has not expired.",
+        error:
+          "Sony rejected that token. Make sure it was copied from a signed-in session and has not expired.",
       })
     }
   })

@@ -3,7 +3,8 @@ set -euo pipefail
 
 MAIN=main
 UPSTREAM=${UPSTREAM:-upstream}
-CHECKS=${CHECKS:-"yarn install --immutable && yarn format/check && yarn typecheck && yarn lint && yarn build && yarn test/unit"}
+FORMAT_CHECK='git diff -z --name-only --diff-filter=d "$UPSTREAM/$MAIN"... | xargs -0 -r yarn prettier --check --ignore-unknown'
+CHECKS=${CHECKS:-"yarn install --immutable && $FORMAT_CHECK && yarn typecheck && yarn lint && yarn build && yarn run test/unit"}
 FORK_ONLY_DELETED=(.github/workflows/release.yml .github/workflows/draft-release.yml .github/workflows/edge.yml add-ons/ps5-mqtt-edge)
 
 die() { echo "fork.sh: $*" >&2; exit 1; }
@@ -45,7 +46,7 @@ finish() {
   require_clean
   check_fork_invariants
   echo "fork.sh: running checks on $branch"
-  bash -c "$CHECKS" || die "checks failed; $MAIN untouched, still on $branch"
+  UPSTREAM=$UPSTREAM MAIN=$MAIN bash -c "$CHECKS" || die "checks failed; $MAIN untouched, still on $branch"
   git switch -q "$MAIN"
   git merge -q --no-ff "$branch" -m "Merge branch '$branch'"
   git branch -q -d "$branch"

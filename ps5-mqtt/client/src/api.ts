@@ -1,4 +1,4 @@
-import type {DiscoveryResponse, IDevice, ILogger, IPsnAccount} from "./types"
+import type { DiscoveryResponse, IDevice, ILogger, IPsnAccount } from "./types"
 
 export default class Api {
   constructor(private readonly logger: ILogger) {}
@@ -52,7 +52,6 @@ export default class Api {
       this.logger.error(e)
     }
   }
-
 
   async getPsnAccount(): Promise<IPsnAccount | undefined> {
     try {

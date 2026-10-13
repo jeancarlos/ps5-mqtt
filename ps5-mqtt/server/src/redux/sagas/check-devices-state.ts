@@ -1,10 +1,10 @@
 import createDebugger from "debug"
 import { call, getContext, put, select } from "redux-saga/effects"
+import { markPoll } from "../../health"
 import type { PlayactorClient } from "../../playactor/client"
 import { PLAYACTOR_CLIENT } from "../../services"
 import { createErrorLogger } from "../../util/error-logger"
 import { updateHomeAssistant } from "../action-creators"
-import { markPoll } from "../../health"
 import { getDeviceList } from "../selectors"
 import type { Device } from "../types"
 
