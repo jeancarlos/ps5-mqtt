@@ -123,4 +123,30 @@ describe("persistPsnAccount saga", () => {
       undefined,
     )
   })
+
+  test("keeps the stored npsso hash for an account restored without its npsso", async () => {
+    mockedFindByAccountId.mockResolvedValue({
+      npssoHash: "hash(original-npsso)",
+      accountId: "account-1",
+      accountName: "MyPsnUser",
+      authInfo: { ...account.authInfo, accessToken: "older-access-token" },
+      updatedAt: "2026-01-01T00:00:00.000Z",
+    })
+
+    await run({
+      type: "UPDATE_PSN_ACCOUNT",
+      payload: { ...account, npsso: "" },
+    })
+
+    expect(mockedSave).toHaveBeenCalledWith(
+      "account-1",
+      {
+        npssoHash: "hash(original-npsso)",
+        accountId: "account-1",
+        accountName: "MyPsnUser",
+        authInfo: account.authInfo,
+      },
+      undefined,
+    )
+  })
 })

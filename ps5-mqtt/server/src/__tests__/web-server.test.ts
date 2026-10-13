@@ -3,6 +3,7 @@ import { createServer, Server } from "http"
 import type { AddressInfo } from "net"
 import { PsnAccount } from "../psn-account"
 import { updateAccount } from "../redux/action-creators"
+import type { Account, State } from "../redux/types"
 import type { Settings } from "../services"
 import { setupWebserver } from "../web-server"
 
@@ -14,6 +15,7 @@ const mockedExchangeNpssoForPsnAccount = jest.mocked(
 
 describe("web server", () => {
   const dispatch = jest.fn()
+  let state: State | undefined
   let server: Server
   let baseUrl: string
 
@@ -24,7 +26,7 @@ describe("web server", () => {
     const app = setupWebserver(
       0,
       { credentialStoragePath: "/nonexistent" } as Settings,
-      () => ({}),
+      () => state,
       dispatch,
     )
     server = createServer(app)
@@ -38,6 +40,7 @@ describe("web server", () => {
 
   beforeEach(() => {
     jest.clearAllMocks()
+    state = undefined
   })
 
   const postPsnAccount = (body: unknown) =>
@@ -80,5 +83,41 @@ describe("web server", () => {
     expect(res.status).toBe(400)
     expect(mockedExchangeNpssoForPsnAccount).not.toHaveBeenCalled()
     expect(dispatch).not.toHaveBeenCalled()
+  })
+
+  const storedAccount: Account = {
+    accountName: "player",
+    accountId: "account-id",
+    npsso: "npsso-value",
+    authInfo: {
+      accessToken: "access-token",
+      accessTokenExpiration: 1,
+      refreshToken: "refresh-token",
+      refreshTokenExpiration: Date.now() + 60_000,
+    },
+    preferredDevices: { ps5: "ps5-id" },
+  }
+
+  test("keeps the preferred devices of an account that is connected again", async () => {
+    state = { devices: {}, accounts: { "account-id": storedAccount } }
+    const { preferredDevices, ...account } = storedAccount
+    mockedExchangeNpssoForPsnAccount.mockResolvedValue(account)
+
+    await postPsnAccount({ npsso: "npsso-value" })
+
+    expect(dispatch).toHaveBeenCalledWith(
+      updateAccount({ ...account, preferredDevices }),
+    )
+  })
+
+  test("reports the account from the store without waiting for it to be saved", async () => {
+    state = { devices: {}, accounts: { "account-id": storedAccount } }
+
+    const res = await fetch(`${baseUrl}/api/psn-account`)
+
+    expect(await res.json()).toMatchObject({
+      connected: true,
+      accountName: "player",
+    })
   })
 })

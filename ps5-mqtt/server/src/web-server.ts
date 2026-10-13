@@ -16,7 +16,7 @@ import { discoverDevices } from "./playactor/discovery"
 import { PsnAccount } from "./psn-account"
 import { PsnAuthStore } from "./psn-auth-store"
 import { updateAccount } from "./redux/action-creators"
-import type { Dispatch } from "./redux/types"
+import type { Dispatch, State } from "./redux/types"
 import { Settings } from "./services"
 import { createErrorLogger } from "./util/error-logger"
 
@@ -36,7 +36,7 @@ export function setupWebserver(
   // Discovery answers with what the console broadcasts; the running title only
   // exists in the store, which is what gets published to MQTT. Passing a getter
   // keeps the web server from depending on the store itself.
-  getDeviceState: () => Record<string, { id?: string; activity?: unknown }>,
+  getState: () => State | undefined,
   dispatch: Dispatch,
 ): Express {
   if (app !== undefined) {
@@ -67,8 +67,9 @@ export function setupWebserver(
   // Reading the store rather than app config: an account added at runtime is
   // only in the store, and config is only the bootstrap seed.
   async function psnAccountSummary() {
-    const accounts = await PsnAuthStore.list()
-    const first = accounts[0]
+    const first =
+      Object.values(getState()?.accounts ?? {})[0] ??
+      (await PsnAuthStore.list())[0]
     if (first === undefined) {
       return { connected: false as const }
     }
@@ -107,7 +108,13 @@ export function setupWebserver(
         undefined,
         dispatch,
       )
-      dispatch(updateAccount({ ...account, preferredDevices: {} }))
+      dispatch(
+        updateAccount({
+          ...account,
+          preferredDevices:
+            getState()?.accounts[account.accountId]?.preferredDevices ?? {},
+        }),
+      )
       res.send({
         connected: true,
         accountName: account.accountName,
@@ -148,7 +155,7 @@ export function setupWebserver(
         logError(e)
       }
 
-      const deviceState = Object.values(getDeviceState())
+      const deviceState = Object.values(getState()?.devices ?? {})
 
       res.send({
         devices: devices.map((device) => ({
