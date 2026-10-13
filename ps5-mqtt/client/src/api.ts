@@ -1,4 +1,10 @@
-import type { DiscoveryResponse, IDevice, ILogger, IPsnAccount } from "./types"
+import type {
+  DiscoveryResponse,
+  IDevice,
+  ILogger,
+  IPsnAccount,
+  Stats,
+} from "./types"
 
 export default class Api {
   constructor(private readonly logger: ILogger) {}
@@ -53,6 +59,18 @@ export default class Api {
     }
   }
 
+  async getStats(): Promise<Stats | undefined> {
+    try {
+      const res = await fetch("api/stats", {
+        method: "GET",
+      })
+      return await res.json()
+    } catch (e) {
+      this.logger.error(e)
+      return undefined
+    }
+  }
+
   async getPsnAccount(): Promise<IPsnAccount | undefined> {
     try {
       const res = await fetch("api/psn-account", { method: "GET" })
@@ -66,8 +84,6 @@ export default class Api {
     }
   }
 
-  // Resolves the server's message on rejection so the form can show why the
-  // token was refused instead of just failing.
   async connectPsnAccount(npsso: string): Promise<string | undefined> {
     let res: Response
     try {

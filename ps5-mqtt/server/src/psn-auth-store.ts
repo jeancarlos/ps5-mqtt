@@ -62,8 +62,6 @@ export namespace PsnAuthStore {
     )
   }
 
-  // The store is keyed by a hash, so callers that need "what is registered?"
-  // rather than "is this specific one registered?" had no way to ask.
   export async function list(): Promise<StoredAccountAuthInfo[]> {
     const store = await readStore()
     return Object.values(store.accounts)
@@ -81,36 +79,24 @@ export namespace PsnAuthStore {
     entry: Omit<StoredAccountAuthInfo, "updatedAt">,
     previousKey?: string,
   ): Promise<void> {
-    return serialize(async () => {
-      const store = await readStore()
+    const store = await readStore()
 
-      if (previousKey && previousKey !== key) {
-        delete store.accounts[previousKey]
-      }
+    if (previousKey && previousKey !== key) {
+      delete store.accounts[previousKey]
+    }
 
-      store.accounts[key] = { ...entry, updatedAt: new Date().toISOString() }
+    store.accounts[key] = { ...entry, updatedAt: new Date().toISOString() }
 
-      await writeStore(store)
-    })
+    await writeStore(store)
   }
 
   export async function remove(key: string): Promise<void> {
-    return serialize(async () => {
-      const store = await readStore()
-      if (key in store.accounts) {
-        delete store.accounts[key]
-        await writeStore(store)
-      }
-    })
+    const store = await readStore()
+    if (key in store.accounts) {
+      delete store.accounts[key]
+      await writeStore(store)
+    }
   }
-}
-
-let writes: Promise<void> = Promise.resolve()
-
-function serialize(task: () => Promise<void>): Promise<void> {
-  const next = writes.then(task)
-  writes = next.catch(() => undefined)
-  return next
 }
 
 interface StoreFile {
