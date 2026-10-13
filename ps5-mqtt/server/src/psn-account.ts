@@ -72,6 +72,12 @@ export namespace PsnAccount {
     }
   }
 
+  export async function restoreFromStore(
+    stored: PsnAuthStore.StoredAccountAuthInfo,
+  ): Promise<PsnAccount> {
+    return await getAccountFromStoredAuthInfo(stored, "")
+  }
+
   export async function updateAccount(
     account: PsnAccount,
   ): Promise<PsnAccount> {
