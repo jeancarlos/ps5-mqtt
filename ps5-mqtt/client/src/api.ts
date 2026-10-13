@@ -56,6 +56,9 @@ export default class Api {
   async getPsnAccount(): Promise<IPsnAccount | undefined> {
     try {
       const res = await fetch("api/psn-account", { method: "GET" })
+      if (!res.ok) {
+        throw new Error(`GET api/psn-account answered HTTP ${res.status}`)
+      }
       return (await res.json()) as IPsnAccount
     } catch (e) {
       this.logger.error(e)
@@ -66,11 +69,17 @@ export default class Api {
   // Resolves the server's message on rejection so the form can show why the
   // token was refused instead of just failing.
   async connectPsnAccount(npsso: string): Promise<string | undefined> {
-    const res = await fetch("api/psn-account", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ npsso }),
-    })
+    let res: Response
+    try {
+      res = await fetch("api/psn-account", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ npsso }),
+      })
+    } catch (e) {
+      this.logger.error(e)
+      return "Could not reach the add-on. Try again in a moment."
+    }
     if (res.ok) {
       return undefined
     }

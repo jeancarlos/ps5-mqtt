@@ -81,24 +81,36 @@ export namespace PsnAuthStore {
     entry: Omit<StoredAccountAuthInfo, "updatedAt">,
     previousKey?: string,
   ): Promise<void> {
-    const store = await readStore()
+    return serialize(async () => {
+      const store = await readStore()
 
-    if (previousKey && previousKey !== key) {
-      delete store.accounts[previousKey]
-    }
+      if (previousKey && previousKey !== key) {
+        delete store.accounts[previousKey]
+      }
 
-    store.accounts[key] = { ...entry, updatedAt: new Date().toISOString() }
+      store.accounts[key] = { ...entry, updatedAt: new Date().toISOString() }
 
-    await writeStore(store)
+      await writeStore(store)
+    })
   }
 
   export async function remove(key: string): Promise<void> {
-    const store = await readStore()
-    if (key in store.accounts) {
-      delete store.accounts[key]
-      await writeStore(store)
-    }
+    return serialize(async () => {
+      const store = await readStore()
+      if (key in store.accounts) {
+        delete store.accounts[key]
+        await writeStore(store)
+      }
+    })
   }
+}
+
+let writes: Promise<void> = Promise.resolve()
+
+function serialize(task: () => Promise<void>): Promise<void> {
+  const next = writes.then(task)
+  writes = next.catch(() => undefined)
+  return next
 }
 
 interface StoreFile {

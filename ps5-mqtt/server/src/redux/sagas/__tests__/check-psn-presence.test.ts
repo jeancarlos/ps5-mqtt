@@ -24,6 +24,25 @@ describe("Check PSN Presence saga", () => {
       .put(updateAccount(mockAccount))
       .run()
   })
+
+  test("one failing account does not skip the others", async () => {
+    const broken = makeAccount({ accountId: "broken" })
+    const healthy = makeAccount({ accountId: "healthy" })
+    mockPsnUpdateAccount.mockImplementation(async (account) => {
+      if (account.accountId === "broken") {
+        throw new Error("refresh token expired")
+      }
+      return account
+    })
+
+    await expectSaga(checkPsnPresence)
+      .withState(<State>{
+        accounts: { broken, healthy },
+        devices: {},
+      })
+      .put(updateAccount(healthy))
+      .run()
+  })
 })
 
 // --- helpers ---
