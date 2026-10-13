@@ -5,63 +5,131 @@ import { Authenticate } from "./authenticate"
 import { AppContext } from "./context"
 import type { IDevice } from "./types"
 
-export const Device: React.FC<{ device: IDevice }> = ({ device }) => {
-  const { api } = React.useContext(AppContext)
-  const [authUrl, setAuthUrl] = React.useState<string>("")
+const formatSystemVersion = (raw?: string): string | undefined => {
+  if (!raw || !/^\d{4,}$/.test(raw)) {
+    return raw
+  }
+  return `${Number(raw.slice(0, 2))}.${raw.slice(2, 4)}`
+}
 
-  const onAuthExit = async () => {
+const Detail: React.FC<{ label: string; value?: string }> = ({
+  label,
+  value,
+}) => (
+  <Grommet.Box direction="row" justify="between" gap="medium" align="baseline">
+    <Grommet.Text size="small" color="text-weak">
+      {label}
+    </Grommet.Text>
+    <Grommet.Text size="small" weight={500} textAlign="end">
+      {value ?? "—"}
+    </Grommet.Text>
+  </Grommet.Box>
+)
+
+export const Device: React.FC<{
+  device: IDevice
+  onRefresh?: () => Promise<void> | void
+}> = ({ device, onRefresh }) => {
+  const { api } = React.useContext(AppContext)
+  const [authUrl, setAuthUrl] = React.useState<string | undefined>(undefined)
+  const [acquiringLink, setAcquiringLink] = React.useState(false)
+
+  const awake = device.status === "AWAKE"
+
+  const onAuthenticate = async () => {
+    setAcquiringLink(true)
+    try {
+      const url = await api.acquireAuthenticationLink(device)
+      if (url !== undefined) {
+        setAuthUrl(url)
+      }
+    } finally {
+      setAcquiringLink(false)
+    }
+  }
+
+  const onAuthExit = async (success?: boolean) => {
     setAuthUrl(undefined)
+    if (success) {
+      await onRefresh?.()
+    }
   }
 
   return (
     <>
-      <Grommet.Card
-        animation={[
-          { type: "zoomIn", duration: 500, size: "large" },
-          { type: "fadeIn", duration: 500, size: "large" },
-        ]}
-      >
-        <Grommet.CardHeader pad="medium">
-          <Grommet.Heading level="2" margin={{ vertical: "none" }}>
-            {device.name}
-          </Grommet.Heading>
-        </Grommet.CardHeader>
-        <Grommet.CardBody pad={{ bottom: "medium" }} height="large">
-          <Grommet.DataTable
-            columns={[
-              { property: "key", primary: true, header: "Property" },
-              { property: "value", header: "Value" },
-            ]}
-            data={Object.keys(device)
-              .filter((k) => k !== "extras")
-              .sort()
-              .map((key) => ({
-                key,
-                value:
-                  typeof device[key] === "object"
-                    ? JSON.stringify(device[key])
-                    : device[key],
-              }))}
-            step={10}
+      <Grommet.Card width={{ min: "medium", max: "medium" }}>
+        <Grommet.CardHeader>
+          <Grommet.Box gap="xsmall">
+            <Grommet.Heading level="3" margin="none">
+              {device.name}
+            </Grommet.Heading>
+            <Grommet.Box direction="row" gap="xsmall" align="center">
+              <Grommet.Box
+                width="10px"
+                height="10px"
+                round="full"
+                background={awake ? "awake" : "standby"}
+              />
+              <Grommet.Text size="small" color="text-weak">
+                {awake ? "Awake" : "Standby"}
+              </Grommet.Text>
+            </Grommet.Box>
+          </Grommet.Box>
+          <Grommet.Tag
+            size="small"
+            value={device.registered ? "Paired" : "Not paired"}
+            background={device.registered ? "awake" : "standby"}
+            border={false}
           />
+        </Grommet.CardHeader>
+
+        <Grommet.CardBody gap="small">
+          {!!device.activity?.titleName && (
+            <Grommet.Box
+              direction="row"
+              gap="small"
+              align="center"
+              pad={{ vertical: "xsmall" }}
+            >
+              <GrommetIcons.Gamepad size="small" color="awake" />
+              <Grommet.Text size="small" weight={500} truncate>
+                {device.activity.titleName}
+              </Grommet.Text>
+            </Grommet.Box>
+          )}
+
+          <Detail
+            label="Address"
+            value={
+              device.address
+                ? `${device.address.address}:${device.address.port}`
+                : undefined
+            }
+          />
+          <Detail label="Type" value={device.type} />
+          <Detail
+            label="System version"
+            value={formatSystemVersion(device.systemVersion)}
+          />
+          <Detail label="Identifier" value={device.id} />
         </Grommet.CardBody>
-        <Grommet.CardFooter pad={{ horizontal: "small" }}>
+
+        <Grommet.CardFooter>
           <Grommet.Button
-            icon={<GrommetIcons.Connect size="medium" />}
-            onClick={async () => {
-              const url = await api.acquireAuthenticationLink(device)
-              if (url !== undefined) {
-                setAuthUrl(url)
-              }
-            }}
-            hoverIndicator
-            tip={"Authenticate"}
+            size="small"
+            icon={<GrommetIcons.Connect size="small" />}
+            label={device.registered ? "Re-authenticate" : "Authenticate"}
+            onClick={onAuthenticate}
+            disabled={acquiringLink}
           />
         </Grommet.CardFooter>
       </Grommet.Card>
 
       {!!authUrl && (
-        <Grommet.Layer onEsc={onAuthExit} onClickOutside={onAuthExit}>
+        <Grommet.Layer
+          onEsc={() => onAuthExit()}
+          onClickOutside={() => onAuthExit()}
+        >
           <Authenticate url={authUrl} onDone={onAuthExit} device={device} />
         </Grommet.Layer>
       )}
