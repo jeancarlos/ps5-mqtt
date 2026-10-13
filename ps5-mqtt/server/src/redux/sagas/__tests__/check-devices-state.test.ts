@@ -61,7 +61,7 @@ describe("Check Devices State saga", () => {
     expect(putActions(effects.put)).toHaveLength(0)
   })
 
-  test("marks the device unavailable when the check fails", async () => {
+  test("marks the device unavailable but keeps its last known power when the check fails", async () => {
     const device = makeDevice()
     const client = makeClient({
       check: jest
@@ -77,7 +77,7 @@ describe("Check Devices State saga", () => {
     const dispatched = putActions(effects.put)
     expect(dispatched.map((a) => a.type)).toEqual(["UPDATE_HOME_ASSISTANT"])
     expect(dispatched[0].payload).toMatchObject({
-      status: "UNKNOWN",
+      status: device.status,
       available: false,
       activity: undefined,
     })

@@ -50,7 +50,6 @@ function* checkDevicesState() {
       yield put(
         updateHomeAssistant({
           ...device,
-          status: "UNKNOWN",
           available: false,
           activity: undefined,
         }),
