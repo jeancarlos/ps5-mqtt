@@ -43,17 +43,17 @@ export const PsnAccountStatus: React.FC = () => {
     }
   }
 
-  const expiresInMs = account?.expiresInMs
-  const expired = expiresInMs !== undefined && expiresInMs !== null && expiresInMs <= 0
+  const expiresInMs = account?.expiresInMs ?? undefined
+  const expired = expiresInMs !== undefined && expiresInMs <= 0
   const expiringSoon =
-    expiresInMs !== undefined && expiresInMs !== null && expiresInMs > 0 && expiresInMs < 7 * DAY_MS
+    expiresInMs !== undefined && expiresInMs > 0 && expiresInMs < 7 * DAY_MS
 
   const label = !account?.connected
     ? "No PSN account"
     : expired
       ? "PSN token expired"
       : expiringSoon
-        ? `PSN expires in ${Math.ceil((expiresInMs as number) / DAY_MS)}d`
+        ? `PSN expires in ${Math.ceil(expiresInMs / DAY_MS)}d`
         : (account.accountName ?? "PSN connected")
 
   return (
@@ -65,11 +65,20 @@ export const PsnAccountStatus: React.FC = () => {
         onClick={() => setOpen(true)}
         // Amber rather than red while it still works: this is a deadline, not
         // an outage, and it should read differently from a broken integration.
-        color={expired ? "status-critical" : expiringSoon ? "status-warning" : undefined}
+        color={
+          expired
+            ? "status-critical"
+            : expiringSoon
+              ? "status-warning"
+              : undefined
+        }
       />
 
       {open && (
-        <Grommet.Layer onEsc={() => setOpen(false)} onClickOutside={() => setOpen(false)}>
+        <Grommet.Layer
+          onEsc={() => setOpen(false)}
+          onClickOutside={() => setOpen(false)}
+        >
           <Grommet.Box pad="medium" gap="small" width="large">
             <Grommet.Heading level="3" margin="none">
               PSN account
@@ -82,8 +91,8 @@ export const PsnAccountStatus: React.FC = () => {
             </Grommet.Text>
 
             <Grommet.Text size="small" color="text-weak">
-              Sign in to PlayStation in this browser, open the link below, and paste
-              the npsso value it returns.
+              Sign in to PlayStation in this browser, open the link below, and
+              paste the npsso value it returns.
             </Grommet.Text>
 
             <Grommet.Anchor
@@ -107,7 +116,11 @@ export const PsnAccountStatus: React.FC = () => {
             )}
 
             <Grommet.Box direction="row" gap="small" justify="end">
-              <Grommet.Button size="small" label="Cancel" onClick={() => setOpen(false)} />
+              <Grommet.Button
+                size="small"
+                label="Cancel"
+                onClick={() => setOpen(false)}
+              />
               <Grommet.Button
                 size="small"
                 primary
