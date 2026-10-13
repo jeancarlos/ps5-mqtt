@@ -65,7 +65,7 @@ resolve_fork_conflicts() {
 sync() {
   local ref=${1:-$UPSTREAM/$MAIN} branch
   require_clean
-  git fetch -q "$UPSTREAM" --tags
+  git fetch -q --tags --force "$UPSTREAM"
   git merge-base --is-ancestor "$ref" "$MAIN" && { echo "fork.sh: $MAIN already contains $ref"; return; }
   branch="feature/sync-upstream-$(git describe --tags --always "$ref" | tr '/' '-')"
   git switch -q "$MAIN"

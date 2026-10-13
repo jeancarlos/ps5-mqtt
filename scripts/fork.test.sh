@@ -59,6 +59,15 @@ CHECKS=true bash "$FORK_SH" sync | grep -q "already contains" || fail "no-op syn
 echo "ok: nothing to sync"
 
 setup
+(cd "$TMP/up" && git tag v1)
+git fetch -q upstream --tags
+upstream_commit "echo two > app.txt" "upstream release bump"
+(cd "$TMP/up" && git tag -f v1 >/dev/null)
+CHECKS=true bash "$FORK_SH" sync >/dev/null
+[ "$(git rev-parse v1)" = "$(git -C "$TMP/up" rev-parse v1)" ] || fail "moved upstream tag not followed"
+echo "ok: an upstream tag moved by its release job does not break sync"
+
+setup
 CHECKS=true bash "$FORK_SH" start demo >/dev/null 2>&1
 echo three > app.txt && git commit -qam feature
 echo "image: ghcr.io/funkeyflo/x" > add-ons/ps5-mqtt/config.yaml && git commit -qam "breaks invariant"
