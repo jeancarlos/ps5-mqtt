@@ -8,6 +8,7 @@ import createSagaMiddleware from "redux-saga"
 import { AppConfig, getAppConfig } from "./config"
 import { createPlayactorClient } from "./playactor/client"
 import { PsnAccount } from "./psn-account"
+import { PsnAuthStore } from "./psn-auth-store"
 import reducer, {
   getDeviceRegistry,
   pollDevices,
@@ -25,7 +26,7 @@ import { registerShutdownHandlers } from "./shutdown"
 import { createErrorLogger } from "./util/error-logger"
 import { setupWebserver } from "./web-server"
 
-let webServerStore: { getState: () => State } | undefined
+let webServerStore: { getState: () => State; dispatch: Dispatch } | undefined
 
 const debug = createDebugger("@ha:ps5")
 const debugMqtt = createDebugger("@ha:ps5:mqtt")
@@ -80,6 +81,29 @@ async function bootstrapPsnAccounts(
     }
   }
   return successCount
+}
+
+export async function restorePersistedPsnAccounts(
+  getState: () => State,
+  dispatch: Dispatch,
+): Promise<void> {
+  for (const stored of await PsnAuthStore.list()) {
+    try {
+      if (
+        stored.accountId === undefined ||
+        getState().accounts[stored.accountId] !== undefined
+      ) {
+        continue
+      }
+      const account = await PsnAccount.restoreFromStore(stored)
+      dispatch(updateAccount({ ...account, preferredDevices: {} }))
+    } catch (e) {
+      logError(e)
+      logError(
+        `Saved account '${stored?.accountName ?? stored?.accountId}' could not be restored. Connect it again from the UI.`,
+      )
+    }
+  }
 }
 
 export async function run() {
@@ -150,10 +174,7 @@ export async function run() {
     // Bootstrapping accounts dispatches through the store (persist-psn-account
     // saga included), so it can only happen once the store/saga middleware
     // above are running.
-    const accountCount = await bootstrapPsnAccounts(
-      appConfig.psn_accounts ?? [],
-      store.dispatch,
-    )
+    await bootstrapPsnAccounts(appConfig.psn_accounts ?? [], store.dispatch)
     createDebugger("@ha:ps5-sensitive:registered-accounts")(
       store.getState().accounts,
     )
@@ -199,10 +220,8 @@ export async function run() {
 
     await mqtt.subscribe("ps5-mqtt/#")
 
-    // don't poll if there are no accounts registered
-    if (accountCount > 0) {
-      store.dispatch(pollPsnPresence())
-    }
+    store.dispatch(pollPsnPresence())
+    restorePersistedPsnAccounts(store.getState, store.dispatch).catch(logError)
 
     store.dispatch(pollDiscovery())
     store.dispatch(pollDevices())
@@ -214,5 +233,6 @@ export async function run() {
     appConfig.frontendPort ?? 3000,
     settings,
     () => webServerStore?.getState(),
+    (action) => webServerStore?.dispatch(action),
   )
 }

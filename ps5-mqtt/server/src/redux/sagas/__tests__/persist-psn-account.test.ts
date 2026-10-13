@@ -123,4 +123,53 @@ describe("persistPsnAccount saga", () => {
       undefined,
     )
   })
+
+  test("keeps the stored npsso hash for an account restored without its npsso", async () => {
+    mockedFindByAccountId.mockResolvedValue({
+      npssoHash: "hash(original-npsso)",
+      accountId: "account-1",
+      accountName: "MyPsnUser",
+      authInfo: { ...account.authInfo, accessToken: "older-access-token" },
+      updatedAt: "2026-01-01T00:00:00.000Z",
+    })
+
+    await run({
+      type: "UPDATE_PSN_ACCOUNT",
+      payload: { ...account, npsso: "" },
+    })
+
+    expect(mockedSave).toHaveBeenCalledWith(
+      "account-1",
+      {
+        npssoHash: "hash(original-npsso)",
+        accountId: "account-1",
+        accountName: "MyPsnUser",
+        authInfo: account.authInfo,
+      },
+      undefined,
+    )
+  })
+
+  test("writes one account at a time so concurrent saves cannot drop each other", async () => {
+    mockedFindByAccountId.mockResolvedValue(undefined)
+    let active = 0
+    let maxActive = 0
+    mockedSave.mockImplementation(async () => {
+      active += 1
+      maxActive = Math.max(maxActive, active)
+      await new Promise((resolve) => setTimeout(resolve, 5))
+      active -= 1
+    })
+
+    await Promise.all([
+      run({ type: "UPDATE_PSN_ACCOUNT", payload: account }),
+      run({
+        type: "UPDATE_PSN_ACCOUNT",
+        payload: { ...account, accountId: "account-2" },
+      }),
+    ])
+
+    expect(mockedSave).toHaveBeenCalledTimes(2)
+    expect(maxActive).toBe(1)
+  })
 })
