@@ -1938,7 +1938,7 @@ const RAW_RUNTIME_STATE =
           ["@types/debug", "npm:4.1.13"],\
           ["@types/express", "npm:5.0.6"],\
           ["@types/jest", "npm:30.0.0"],\
-          ["@types/lodash", "npm:4.17.24"],\
+          ["@types/lodash", "npm:4.17.26"],\
           ["@types/node", "npm:26.6.5"],\
           ["@types/shelljs", "npm:0.10.0"],\
           ["async-mqtt", "npm:2.6.3"],\
@@ -2689,10 +2689,10 @@ const RAW_RUNTIME_STATE =
       }]\
     ]],\
     ["@types/lodash", [\
-      ["npm:4.17.24", {\
-        "packageLocation": "./.yarn/cache/@types-lodash-npm-4.17.24-4a04035060-b72f60d4da.zip/node_modules/@types/lodash/",\
+      ["npm:4.17.26", {\
+        "packageLocation": "./.yarn/cache/@types-lodash-npm-4.17.26-7962ba7509-7f8a95db94.zip/node_modules/@types/lodash/",\
         "packageDependencies": [\
-          ["@types/lodash", "npm:4.17.24"]\
+          ["@types/lodash", "npm:4.17.26"]\
         ],\
         "linkType": "HARD"\
       }]\
