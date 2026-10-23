@@ -1907,7 +1907,7 @@ const RAW_RUNTIME_STATE =
           ["react", "npm:19.2.7"],\
           ["react-dom", "virtual:d4f807efd23a5cd4736701b5d35b7cbaa79d35c08724c596029848daa71ff1714c5f33c8e5f65ccb665de53a15a170b8ed6dc1cfcd3c70c50f69654c5b09233a#npm:19.2.7"],\
           ["react-is", "npm:19.2.7"],\
-          ["react-refresh", "npm:0.18.0"],\
+          ["react-refresh", "npm:0.19.0"],\
           ["rimraf", "npm:6.1.3"],\
           ["styled-components", "virtual:d4f807efd23a5cd4736701b5d35b7cbaa79d35c08724c596029848daa71ff1714c5f33c8e5f65ccb665de53a15a170b8ed6dc1cfcd3c70c50f69654c5b09233a#npm:6.4.3"],\
           ["typescript", "patch:typescript@npm%3A6.0.3#optional!builtin<compat/typescript>::version=6.0.3&hash=5786d5"]\
@@ -2348,7 +2348,7 @@ const RAW_RUNTIME_STATE =
           ["@rspack/plugin-react-refresh", "virtual:d4f807efd23a5cd4736701b5d35b7cbaa79d35c08724c596029848daa71ff1714c5f33c8e5f65ccb665de53a15a170b8ed6dc1cfcd3c70c50f69654c5b09233a#npm:2.0.2"],\
           ["@types/react-refresh", null],\
           ["@types/rspack__core", null],\
-          ["react-refresh", "npm:0.18.0"]\
+          ["react-refresh", "npm:0.19.0"]\
         ],\
         "packagePeers": [\
           "@rspack/core",\
@@ -8610,10 +8610,10 @@ const RAW_RUNTIME_STATE =
       }]\
     ]],\
     ["react-refresh", [\
-      ["npm:0.18.0", {\
-        "packageLocation": "./.yarn/cache/react-refresh-npm-0.18.0-5576c3f4a3-34a262f7fd.zip/node_modules/react-refresh/",\
+      ["npm:0.19.0", {\
+        "packageLocation": "./.yarn/cache/react-refresh-npm-0.19.0-c4fbf998df-8c7af6d165.zip/node_modules/react-refresh/",\
         "packageDependencies": [\
-          ["react-refresh", "npm:0.18.0"]\
+          ["react-refresh", "npm:0.19.0"]\
         ],\
         "linkType": "HARD"\
       }]\
